@@ -3,21 +3,18 @@
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import ApplyButton from "@/Components/Jobs/ApplyButton";
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import ApplyFormSkeleton from "@/Components/ApplyForm/ApplyFormSkeleton";
-import { AppliedStatus } from "@/lib/props";
 
 // ✅ Dynamically import ReactQuill to disable SSR
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface ApplyFormProps {
-  params: Promise<{ id: string }>;
-  applied: AppliedStatus;
+  jobId: string;
+  applied?: string;
 }
 
-const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
-  const { id: jobId } = use(params);
-
+const ApplyForm: React.FC<ApplyFormProps> = ({ jobId, applied }) => {
   const [formData, setFormData] = useState({
     coverLetter: "",
     phoneNumber: "",
@@ -163,4 +160,14 @@ const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
   );
 };
 
-export default ApplyForm;
+export default function Page({
+  params,
+  searchParams,
+}: {
+  params: { id: string };
+  searchParams: { applied?: string };
+}) {
+  return (
+    <ApplyForm jobId={params.id} applied={searchParams?.applied} />
+  );
+}
