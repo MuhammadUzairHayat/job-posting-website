@@ -2,16 +2,14 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-interface Props {
-  params: {
-    id: string;
-  };
-}
-
-export async function DELETE(req: NextRequest, { params }: Props) {
+// 👇 Fix here: use `context` as the second parameter
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
   const session = await auth();
   const currentUser = session?.user;
-  const appId = params.id;
+  const appId = context.params.id;
 
   try {
     if (!currentUser) return new NextResponse("Unauthorized", { status: 401 });
