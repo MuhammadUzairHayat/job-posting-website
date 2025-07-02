@@ -1,0 +1,57 @@
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
+import { NextResponse } from "next/server";
+
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+  const session = await auth();
+  const currentUser = session?.user;
+  const appId = params.id;
+
+  try {
+
+  if (!currentUser) return new NextResponse("Unauthorized", { status: 401 });
+
+  const application = await prisma.application.findUnique({
+    where: { id: appId },
+  });
+
+  if (!application) return new NextResponse("Not Found", { status: 404 });
+
+  const isApplicant = currentUser.id === application.userId;
+
+  const isEmployer = await prisma.job.findFirst({
+    where: {
+      id: application.jobId,
+      postedById: currentUser.id,
+    },
+  });
+
+  if (isApplicant) {
+    if (application.isDeletedByEmployer) {
+      // Both have deleted – permanently delete
+      await prisma.application.delete({ where: { id: appId } });
+    } else {
+      // Soft delete for user
+      await prisma.application.update({
+        where: { id: appId },
+        data: { isDeletedByUser: true },
+      });
+    }
+  } else if (isEmployer) {
+    if (application.isDeletedByUser) {
+      await prisma.application.delete({ where: { id: appId } });
+    } else {
+      await prisma.application.update({
+        where: { id: appId },
+        data: { isDeletedByEmployer: true },
+      });
+    }
+  } else {
+    return new NextResponse("Forbidden", { status: 403 });
+  }
+
+  return NextResponse.json({ success: true });
+} catch(err) {
+  console.log("Error Occurred in deleting application: "+ err)
+}
+}

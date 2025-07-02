@@ -1,0 +1,59 @@
+@media screen and (max-width: 1040px) {
+  .card-bottom-sect {
+    flex-direction: column;
+    align-items: normal;
+    gap: 7px;
+  }
+
+  .card-bottom-sect a {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .myCard-bottom-sect {
+    justify-content: normal;
+    flex-direction: column;
+    align-items: normal;
+    gap: 7px;
+  }
+
+  .myCard-bottom-sect a {
+    text-align: center;
+    padding-block: 0.5rem;
+  }
+}
+@media screen and (max-width: 760px) and (min-width: 660px) {
+  .card-top-sect {
+    flex-direction: column;
+    align-items: normal;
+    justify-content: normal;
+    width: 100%;
+  }
+
+  .myCard-bottom-sect {
+    justify-content: normal;
+    flex-direction: column;
+    align-items: normal;
+    gap: 7px;
+  }
+
+  .myCard-bottom-sect a {
+    text-align: center;
+    padding-block: 0.5rem;
+  }
+
+  .applications-container {
+    display: flex;
+  }
+
+  .others-applications-container:first-child {
+    width: 100%;
+  }
+
+  .my-applications-container {
+    width: 80%;
+    margin-top: 0;
+  }
+
+}
