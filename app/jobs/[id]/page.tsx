@@ -12,8 +12,8 @@ import ErrorMessage from "@/Components/AlertMessages/ErrorMessage";
 import { ovo } from "@/lib/fonts";
 import { AppliedStatus } from "@/lib/props";
 
-interface PageProps {
-  params: { job: string };
+type PageProps = {
+  params: { id: string };
   searchParams: { applied?: string };
 }
 
@@ -22,8 +22,11 @@ export default async function SingleJobPage({
   searchParams,
 }: PageProps) {
   const session = await auth();
-  const {job: jobId} = params
-  const {applied} = searchParams;
+  const jobId = params.id
+  const applied = searchParams.applied;
+
+  console.log("jobID : "+jobId)
+  console.log("applied: "+applied)
     const getAppliedStatus = (value?: string): AppliedStatus => {
     if (value && ["success", "already", "error"].includes(value)) {
       return value as AppliedStatus;
