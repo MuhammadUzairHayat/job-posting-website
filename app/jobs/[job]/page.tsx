@@ -13,8 +13,8 @@ import { ovo } from "@/lib/fonts";
 import { AppliedStatus } from "@/lib/props";
 
 interface PageProps {
-  params: Promise<{ job: string }>;
-  searchParams: Promise<{ applied?: string }>;
+  params: { job: string };
+  searchParams: { applied?: string };
 }
 
 export default async function SingleJobPage({
@@ -22,8 +22,8 @@ export default async function SingleJobPage({
   searchParams,
 }: PageProps) {
   const session = await auth();
-  const {job: jobId} = await params
-  const {applied} = await searchParams;
+  const {job: jobId} = params
+  const {applied} = searchParams;
     const getAppliedStatus = (value?: string): AppliedStatus => {
     if (value && ["success", "already", "error"].includes(value)) {
       return value as AppliedStatus;
