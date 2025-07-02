@@ -2,8 +2,9 @@
 "use client";
 
 import { useState } from "react";
-import JobCard, { JobCardProps } from "@/Components/Jobs/JobCard";
+import JobCard from "@/Components/Jobs/JobCard";
 import NoPostedJobUI from "./NoPostedJobUI";
+import { JobCardProps } from "@/lib/props";
 
 interface Props {
   jobs: JobCardProps["job"][];
