@@ -5,13 +5,14 @@ import "react-quill/dist/quill.snow.css";
 import ApplyButton from "@/Components/Jobs/ApplyButton";
 import React, { use, useState } from "react";
 import ApplyFormSkeleton from "@/Components/ApplyForm/ApplyFormSkeleton";
+import { AppliedStatus } from "@/lib/props";
 
 // ✅ Dynamically import ReactQuill to disable SSR
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface ApplyFormProps {
   params: Promise<{ id: string }>;
-  applied: {applied?: string};
+  applied: AppliedStatus;
 }
 
 const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
@@ -154,7 +155,7 @@ const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
 
       <ApplyButton
         jobId={jobId}
-        applied={applied?.applied || "applying"}
+        applied={applied || "applying"}
         formData={formData}
         resume={resume}
       />

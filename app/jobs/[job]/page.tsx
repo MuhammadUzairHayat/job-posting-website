@@ -10,6 +10,7 @@ import Link from "next/link";
 import SuccessMessage from "@/Components/AlertMessages/SuccessMessage";
 import ErrorMessage from "@/Components/AlertMessages/ErrorMessage";
 import { ovo } from "@/lib/fonts";
+import { AppliedStatus } from "@/lib/props";
 
 interface PageProps {
   params: Promise<{ job: string }>;
@@ -23,6 +24,14 @@ export default async function SingleJobPage({
   const session = await auth();
   const {job: jobId} = await params
   const {applied} = await searchParams;
+    const getAppliedStatus = (value?: string): AppliedStatus => {
+    if (value && ["success", "already", "error"].includes(value)) {
+      return value as AppliedStatus;
+    }
+    return "applying"; // default value
+  };
+
+  const appliedStatus = getAppliedStatus(applied);
   const currentUserId = session?.user?.id;
 
   const job = await prisma.job.findUnique({
@@ -114,7 +123,7 @@ export default async function SingleJobPage({
             {!isOwner && (
               // <ApplyButton jobId={job.id} applied={applied} />
               <Link
-                href={`/apply-job/${job.id}?applied=${applied || "applying"}`}
+                href={`/apply-job/${job.id}?applied=${appliedStatus}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600  text-white font-semibold shadow-md hover:from-indigo-700 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
               >
                 <svg
