@@ -1,10 +1,10 @@
 "use client"
 
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
 import ApplyButton from "@/Components/Jobs/ApplyButton";
 import React, { useState } from "react";
 import ApplyFormSkeleton from "@/Components/ApplyForm/ApplyFormSkeleton";
+import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
