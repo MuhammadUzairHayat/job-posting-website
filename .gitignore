@@ -1,43 +1,58 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Node dependencies
 /node_modules
 /.pnp
 .pnp.*
+
+# Yarn & PNPM
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.pnpm-debug.log*
 
-# testing
+# Output and Build folders
+/.next
+/out
+/build
+/dist
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+prisma/migrations/
+*.sqlite
+/app/generated/prisma
+
+# Vercel
+.vercel
+
+# Coverage reports
 /coverage
 
-# next.js
-/.next/
-/out/
+# Environment variables
+.env
+.env.*   # Covers .env.local, .env.production, etc.
 
-# production
-/build
-
-# misc
+# macOS
 .DS_Store
-*.pem
 
-# debug
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
+# TypeScript build info
 *.tsbuildinfo
 next-env.d.ts
 
-/app/generated/prisma
+# Editor folders and system files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Optional: Ignore local backups or temporary files
+*.bak
+*.tmp
+*.swp
