@@ -5,14 +5,35 @@ import { FaBriefcase } from "react-icons/fa";
 import { statusColors } from "./ApplicationCard";
 import DeleteApplicationMenu from "./DeleteApplicationMenu";
 
+type Application = {
+  id: string;
+  job: {
+    id: string;
+    title: string;
+    company: string;
+  };
+  user: {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+  status?: string | null;
+  appliedAt: string | Date;
+};
+
 export default async function MyApplications() {
   const session = await auth();
   const currentUser = session?.user;
 
-  const applications = await prisma.application.findMany({
+  if (!currentUser) {
+    return <div className="mt-24 text-center">Please login</div>;
+  }
+
+  const applications: Application[] = await prisma.application.findMany({
     where: {
-      userId: currentUser?.id,
-      isDeletedByUser: false
+      userId: currentUser.id,
+      isDeletedByUser: false,
     },
     include: {
       job: true,
@@ -46,7 +67,9 @@ export default async function MyApplications() {
                 <p className="font-medium text-gray-900">{app.job.title}</p>
                 <span
                   className={`w-[min-content] text-xs font-medium px-3 py-1 rounded-full capitalize ${
-                    app.status && statusColors[app.status] ? statusColors[app.status] : "bg-gray-100 text-gray-600"
+                    app.status && statusColors[app.status]
+                      ? statusColors[app.status]
+                      : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   {app.status}
@@ -61,7 +84,10 @@ export default async function MyApplications() {
               <div>
                 <p className="text-sm text-gray-600">{app.job.company}</p>
                 <p className="text-xs text-gray-400 mt-1">
-                  Applied on {new Date(app.appliedAt).toLocaleDateString()}
+                  Applied on{" "}
+                  {typeof app.appliedAt === "string"
+                    ? app.appliedAt
+                    : app.appliedAt.toLocaleString()}
                 </p>
               </div>
 
