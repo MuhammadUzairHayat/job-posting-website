@@ -2,10 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+interface Props {
+  params: {
+    id: string;
+  };
+}
+
+export async function DELETE(req: NextRequest, { params }: Props) {
   const session = await auth();
   const currentUser = session?.user;
   const appId = params.id;
