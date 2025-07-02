@@ -1,8 +1,8 @@
 "use client";
 
 import JobCard from "@/Components/Jobs/JobCard";
-import { JobCardProps } from "@/Components/Jobs/JobCard";
 import ViewMoreButton from "./ViewMoreButton";
+import { JobCardProps } from "@/lib/props";
 
 export type HomeJobSectionProps = {
   jobs: JobCardProps["job"][];
