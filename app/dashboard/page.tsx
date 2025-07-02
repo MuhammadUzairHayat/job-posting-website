@@ -2,49 +2,54 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardContent from "@/Components/dashboard/DashboardContent";
 import DashboardHeroSection from "@/Components/dashboard/DashboardHeroSection";
+import { ApplicationCardProps, JobCardProps } from "@/lib/props";
 
 export default async function DashboardPage() {
   const session = await auth();
   const currentUser = session?.user;
 
-  if (!currentUser) return <div className="mt-24 text-center">Please login</div>;
+  if (!currentUser)
+    return <div className="mt-24 text-center">Please login</div>;
 
-  // ✅ Fetch your posted jobs
-  const myJobs = 
-    (await prisma.job.findMany({
-      where: { postedById: currentUser.id },
-      include: { postedBy: true },
-      orderBy: { postedAt: "desc" },
-    })) || null
-  ;
+  const myJobs: JobCardProps["job"][] = await prisma.job.findMany({
+    where: { postedById: currentUser.id },
+    include: { postedBy: true },
+    orderBy: { postedAt: "desc" },
+  });
 
-  // ✅ Fetch applications to your jobs
-  const jobsApplications = await prisma.application.findMany({
-    where: {
-      jobId: { in: myJobs.map((job) => job.id) },
-      isDeletedByEmployer: false
-    },
-    include: {
-      job: {
-        include: {
-          postedBy: true,
-        },
+  const jobsApplications: ApplicationCardProps["application"][] =
+    (await prisma.application.findMany({
+      where: {
+        jobId: { in: myJobs.map((job) => job.id) },
+        isDeletedByEmployer: false,
       },
-      user: true,
-    },
-    orderBy: { appliedAt: "desc" },
-  }) || null;
+      include: {
+        job: {
+          include: {
+            postedBy: true,
+          },
+        },
+        user: true,
+      },
+      orderBy: { appliedAt: "desc" },
+    })) || null;
 
   // ✅ Fetch jobs *you* have applied to
-  const myApplications = await prisma.application.findMany({
-    where: {
-      userId: currentUser.id,
-      isDeletedByUser: false
-    },
-    include: {
-      job: true
-    }
-  });
+  const myApplications: ApplicationCardProps["application"][] =
+    await prisma.application.findMany({
+      where: {
+        userId: currentUser.id,
+        isDeletedByUser: false,
+      },
+      include: {
+        job: {
+          include: {
+            postedBy: true,
+          },
+        },
+        user: true,
+      },
+    });
 
   // console.log("Applicants Applications: "+jobsApplications)
   // console.log("jobs Posted: ", myJobs)

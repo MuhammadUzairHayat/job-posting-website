@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { JobCardProps } from "@/lib/props";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -50,7 +51,7 @@ export async function GET(req: Request) {
     ];
   }
 
-  const jobs = await prisma.job.findMany({
+  const jobs: JobCardProps["job"][] = await prisma.job.findMany({
     where,
     orderBy: { postedAt: "desc" },
     include: {
