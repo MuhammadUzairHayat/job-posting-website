@@ -28,7 +28,7 @@ export async function POST(
 
     if (existingApplication) {
       // Redirect to job page with applied=1
-      return NextResponse.redirect(new URL(`/jobs/${id}?applied=1`, req.url));
+      return NextResponse.redirect(new URL(`/jobs/${id}?applied=already`, req.url));
     }
 
     const resume = data.get("resume") as File;

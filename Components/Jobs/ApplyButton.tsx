@@ -7,7 +7,7 @@ import ErrorMessage from "../AlertMessages/ErrorMessage";
 
 interface ApplyButtonProps {
   jobId: string;
-  applied: "applying" | "success" | "1" | "error";
+  applied: string;
   formData: {
     coverLetter: string;
     phoneNumber: string;
@@ -26,13 +26,13 @@ const ApplyButton: React.FC<ApplyButtonProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(applied === "success");
-  const [error, setError] = useState(applied === "1");
+  const [error, setError] = useState(applied);
   const router = useRouter();
 
   async function jobApplyHandler() {
     setLoading(true);
     setSuccess(false);
-    setError(false);
+    setError("");
 
     try {
       const form = new FormData();
@@ -65,10 +65,10 @@ const ApplyButton: React.FC<ApplyButtonProps> = ({
         setSuccess(true);
         router.refresh();
       } else {
-        setError(true);
+        setError(applied);
       }
     } catch (err) {
-      setError(true);
+      setError(applied);
       console.error("Error Occurred: " + err);
     }
 
@@ -80,7 +80,7 @@ const ApplyButton: React.FC<ApplyButtonProps> = ({
       {success && (
         <SuccessMessage message="Application submitted successfully!" />
       )}
-      {error && <ErrorMessage message={"You already applied for this job. "} />}
+      {error && <ErrorMessage message={error === "already" ? "You already applied for this job. " : (error === "error") ? "Resume is missing." : (error === "resume_missing") ? "Error Occurred in apply. " : ""} />}
       <button
         type="button"
         onClick={jobApplyHandler}

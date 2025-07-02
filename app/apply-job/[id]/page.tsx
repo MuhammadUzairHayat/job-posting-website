@@ -11,11 +11,12 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface ApplyFormProps {
   params: Promise<{ id: string }>;
-  applied: "applying" | "success" | "1" | "error";
+  appliedParams: Promise<{applied: string}>;
 }
 
-const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
+const ApplyForm: React.FC<ApplyFormProps> = ({ params, appliedParams }) => {
   const { id: jobId } = use(params);
+  const {applied} = use(appliedParams)
 
   const [formData, setFormData] = useState({
     coverLetter: "",
