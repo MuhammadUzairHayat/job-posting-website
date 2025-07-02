@@ -11,7 +11,7 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface ApplyFormProps {
   params: Promise<{ id: string }>;
-  appliedParams: Promise<{applied: string}>;
+  appliedParams: Promise<{applied?: string}>;
 }
 
 const ApplyForm: React.FC<ApplyFormProps> = ({ params, appliedParams }) => {
