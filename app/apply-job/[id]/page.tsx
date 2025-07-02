@@ -11,7 +11,7 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface ApplyFormProps {
   params: Promise<{ id: string }>;
-  applied: { applied?: string };
+  applied: "applying" | "success" | "1" | "error";
 }
 
 const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
@@ -154,7 +154,7 @@ const ApplyForm: React.FC<ApplyFormProps> = ({ params, applied }) => {
 
       <ApplyButton
         jobId={jobId}
-        applied={applied?.applied}
+        applied={applied || "applying"}
         formData={formData}
         resume={resume}
       />

@@ -12,8 +12,8 @@ import ErrorMessage from "@/Components/AlertMessages/ErrorMessage";
 import { ovo } from "@/lib/fonts";
 
 interface PageProps {
-  params: { job: string };
-  searchParams: { applied?: string };
+  params: Promise<{ job: string }>;
+  searchParams: Promise<{ applied?: string }>;
 }
 
 export default async function SingleJobPage({
@@ -21,10 +21,12 @@ export default async function SingleJobPage({
   searchParams,
 }: PageProps) {
   const session = await auth();
+  const {job: jobId} = await params
+  const {applied} = await searchParams;
   const currentUserId = session?.user?.id;
 
   const job = await prisma.job.findUnique({
-    where: { id: params.job },
+    where: { id: jobId },
     include: { postedBy: true },
   });
 
@@ -34,11 +36,11 @@ export default async function SingleJobPage({
 
   return (
     <div className="max-w-4xl mx-auto  my-20 px-4">
-      {searchParams?.applied === "success" ? (
+      {applied === "success" ? (
         <SuccessMessage message="Applied Successfully" />
-      ) : searchParams?.applied === "1" ? (
+      ) : applied === "1" ? (
         <ErrorMessage message={"You already applied for this job"} />
-      ) : searchParams?.applied === "1" ? (
+      ) : applied === "1" ? (
         <ErrorMessage message="Error Occurred in Apply" />
       ) : (
         ""
@@ -110,9 +112,9 @@ export default async function SingleJobPage({
           {/* Buttons */}
           <div className="flex gap-3 items-center">
             {!isOwner && (
-              // <ApplyButton jobId={job.id} applied={searchParams?.applied} />
+              // <ApplyButton jobId={job.id} applied={applied} />
               <Link
-                href={`/apply-job/${job.id}`}
+                href={`/apply-job/${job.id}?applied=${applied || "applying"}`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600  text-white font-semibold shadow-md hover:from-indigo-700 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
               >
                 <svg

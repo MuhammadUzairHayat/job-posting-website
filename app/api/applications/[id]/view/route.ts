@@ -1,12 +1,12 @@
-import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const {id } = params
+  const { id } = await params;
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -22,7 +22,7 @@ export async function PATCH(
 
     return NextResponse.json(application);
   } catch (error) {
-    console.error('Error updating application status:', error);
+    console.error("Error updating application status:", error);
     return NextResponse.json(
       { error: "Failed to update application" },
       { status: 500 }

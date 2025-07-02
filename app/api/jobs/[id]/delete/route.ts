@@ -4,13 +4,14 @@ import { auth } from "@/lib/auth";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const session = await auth();
   const currentUserId = session?.user?.id;
 
   const job = await prisma.job.findUnique({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   if (!job || job.postedById !== currentUserId) {
@@ -18,7 +19,7 @@ export async function POST(
   }
 
   await prisma.job.delete({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   return NextResponse.redirect(new URL("/jobs", req.url));

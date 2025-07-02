@@ -7,7 +7,7 @@ import ErrorMessage from "../AlertMessages/ErrorMessage";
 
 interface ApplyButtonProps {
   jobId: string;
-  applied: string;
+  applied: "applying" | "success" | "1" | "error";
   formData: {
     coverLetter: string;
     phoneNumber: string;
@@ -18,63 +18,68 @@ interface ApplyButtonProps {
   resume: File | null;
 }
 
-
-const ApplyButton: React.FC<ApplyButtonProps> = ({ jobId, applied, formData, resume }) => {
+const ApplyButton: React.FC<ApplyButtonProps> = ({
+  jobId,
+  applied,
+  formData,
+  resume,
+}) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(applied === "success");
   const [error, setError] = useState(applied === "1");
   const router = useRouter();
 
-async function jobApplyHandler() {
-  setLoading(true);
-  setSuccess(false);
-  setError(false);
+  async function jobApplyHandler() {
+    setLoading(true);
+    setSuccess(false);
+    setError(false);
 
-  try {
-    const form = new FormData();
+    try {
+      const form = new FormData();
 
-    form.append("coverLetter", formData.coverLetter);
-    form.append("phoneNumber", formData.phoneNumber);
-    form.append("linkedin", formData.linkedin);
-    form.append("github", formData.github);
-    form.append("portfolio", formData.portfolio);
+      form.append("coverLetter", formData.coverLetter);
+      form.append("phoneNumber", formData.phoneNumber);
+      form.append("linkedin", formData.linkedin);
+      form.append("github", formData.github);
+      form.append("portfolio", formData.portfolio);
 
-    if (resume) {
-      form.append("resume", resume);
-    } else {
-      alert("Please upload a PDF resume.");
-      setLoading(false);
-      return;
-    }
+      if (resume) {
+        form.append("resume", resume);
+      } else {
+        alert("Please upload a PDF resume.");
+        setLoading(false);
+        return;
+      }
 
-    const res = await fetch(`/api/jobs/${jobId}/apply`, {
-      method: "POST",
-      body: form,
-    });
+      const res = await fetch(`/api/jobs/${jobId}/apply`, {
+        method: "POST",
+        body: form,
+      });
 
-    if (res.redirected) {
-      router.push(res.url);
-      return;
-    }
+      if (res.redirected) {
+        router.push(res.url);
+        return;
+      }
 
-    if (res.ok) {
-      setSuccess(true);
-      router.refresh();
-    } else {
+      if (res.ok) {
+        setSuccess(true);
+        router.refresh();
+      } else {
+        setError(true);
+      }
+    } catch (err) {
       setError(true);
+      console.error("Error Occurred: " + err);
     }
-  } catch (err) {
-    setError(true);
-    console.error("Error Occurred: " + err);
+
+    setLoading(false);
   }
-
-  setLoading(false);
-}
-
 
   return (
     <>
-      {success && <SuccessMessage message="Application submitted successfully!" />}
+      {success && (
+        <SuccessMessage message="Application submitted successfully!" />
+      )}
       {error && <ErrorMessage message={"You already applied for this job. "} />}
       <button
         type="button"
