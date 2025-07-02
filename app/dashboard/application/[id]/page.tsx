@@ -12,18 +12,17 @@ export default async function ApplicationDetailPage({
 }) {
   const { id } = await params;
 
-  const application =
-    await prisma.application.findUnique({
-      where: { id },
-      include: {
-        job: {
-          include: {
-            postedBy: true,
-          },
+  const application = await prisma.application.findUnique({
+    where: { id },
+    include: {
+      job: {
+        include: {
+          postedBy: true,
         },
-        user: true,
       },
-    });
+      user: true,
+    },
+  });
 
   if (!application) return notFound();
 

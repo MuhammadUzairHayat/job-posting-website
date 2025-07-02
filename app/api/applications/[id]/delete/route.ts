@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-import { Application } from "@prisma/client";
 
 // 👇 Fix here: use `context` as the second parameter
 export async function DELETE(
@@ -15,7 +14,7 @@ export async function DELETE(
   try {
     if (!currentUser) return new NextResponse("Unauthorized", { status: 401 });
 
-    const application: Application | null = await prisma.application.findUnique(
+    const application = await prisma.application.findUnique(
       {
         where: { id: appId },
         include: {
