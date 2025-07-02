@@ -32,10 +32,16 @@ async function fetchJobs({ location = "", type = "", post = "" }): Promise<Job[]
   return data.jobs;
 }
 
-export default async function JobsPage({ searchParams }: { searchParams?: { location?: string; type?: string; post?: string } }) {
-  const location = searchParams?.location || "";
-  const type = searchParams?.type || "";
-  const post = searchParams?.post || "";
+export default async function JobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ location?: string; type?: string; post?: string }>;
+}) {
+  const resolvedSearchParams = await searchParams;
+
+  const location = resolvedSearchParams?.location || "";
+  const type = resolvedSearchParams?.type || "";
+  const post = resolvedSearchParams?.post || "";
 
   const jobs = await fetchJobs({ location, type, post });
 
@@ -44,11 +50,11 @@ export default async function JobsPage({ searchParams }: { searchParams?: { loca
       <h1 className="text-4xl font-bold text-center mb-10">Explore Jobs</h1>
       <SearchBar defaultLocation={location} defaultType={type} defaultPost={post} />
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-8">
-          {jobs.length > 0 ? (
-            jobs.map((job: Job) => <JobCard key={job.id} job={job} />)
-          ) : (
-            <p className="text-center col-span-full">No jobs found.</p>
-          )}
+        {jobs.length > 0 ? (
+          jobs.map((job: Job) => <JobCard key={job.id} job={job} />)
+        ) : (
+          <p className="text-center col-span-full">No jobs found.</p>
+        )}
       </div>
     </div>
   );

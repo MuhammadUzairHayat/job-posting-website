@@ -1,13 +1,16 @@
 import ApplyForm from "@/Components/ApplyForm/ApplyForm";
 
-export default function Page({
+export default async function Page({
   params,
   searchParams,
 }: {
-  params: { id: string };
-  searchParams: { applied?: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ applied?: string }>;
 }) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+
   return (
-    <ApplyForm jobId={params.id} applied={searchParams?.applied} />
+    <ApplyForm jobId={resolvedParams.id} applied={resolvedSearchParams?.applied} />
   );
 }

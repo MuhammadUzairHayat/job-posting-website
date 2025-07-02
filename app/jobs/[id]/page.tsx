@@ -12,22 +12,24 @@ import ErrorMessage from "@/Components/AlertMessages/ErrorMessage";
 import { ovo } from "@/lib/fonts";
 import { AppliedStatus } from "@/lib/props";
 
-type PageProps = {
-  params: { id: string };
-  searchParams: { applied?: string };
-}
-
 export default async function SingleJobPage({
   params,
   searchParams,
-}: PageProps) {
-  const session = await auth();
-  const jobId = params.id
-  const applied = searchParams.applied;
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ applied?: string }>;
+}) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
 
-  console.log("jobID : "+jobId)
-  console.log("applied: "+applied)
-    const getAppliedStatus = (value?: string): AppliedStatus => {
+  const jobId = resolvedParams.id;
+  const applied = resolvedSearchParams?.applied || "applying";
+
+  const session = await auth();
+
+  console.log("jobID : " + jobId);
+  console.log("applied: " + applied);
+  const getAppliedStatus = (value?: string): AppliedStatus => {
     if (value && ["success", "already", "error"].includes(value)) {
       return value as AppliedStatus;
     }
