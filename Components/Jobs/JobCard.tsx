@@ -5,24 +5,9 @@ import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import ViewButton from "./ViewButton";
 import { ovo } from "@/lib/fonts";
+import { JobCardProps } from "@/lib/props";
 
-export interface JobCardProps {
-  job: {
-    id: string;
-    title: string;
-    company: string;
-    location: string;
-    type: string;
-    salary?: number;
-    description: string;
-    postedAt: string | Date;
-    postedBy?: {
-      id?: string;
-      name?: string;
-      image?: string;
-    };
-  };
-}
+
 
 const typeColors: Record<string, string> = {
   "Remote": "bg-purple-100 text-purple-700",

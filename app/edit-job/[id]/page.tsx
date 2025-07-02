@@ -3,12 +3,12 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import EditJobForm from "@/Components/EditJobForm/EditJobForm";
 
-export default async function EditJobPage({ params }: { params: { id: string } }) {
+export default async function EditJobPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   const currentUserId = session?.user?.id;
-
+  const {id} = await params
   const job = await prisma.job.findUnique({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   if (!job) return notFound();
@@ -24,7 +24,7 @@ export default async function EditJobPage({ params }: { params: { id: string } }
   }) {
     "use server";
     await prisma.job.update({
-      where: { id: params.id },
+      where: { id: id },
       data: {
         title: data.title,
         company: data.company,
@@ -34,7 +34,7 @@ export default async function EditJobPage({ params }: { params: { id: string } }
         description: data.description,
       },
     });
-    redirect(`/SinglePageJob/${params.id}`);
+    redirect(`/SinglePageJob/${id}`);
   }
 
   return (

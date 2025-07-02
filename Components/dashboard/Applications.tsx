@@ -4,8 +4,8 @@
 
 import { useState } from "react";
 import ApplicationCard from "@/Components/dashboard/ApplicationCard";
-import { ApplicationCardProps } from "@/Components/dashboard/ApplicationCard";
 import NoApplicationUI from "./NoApplicationUI";
+import { ApplicationCardProps } from "@/lib/props";
 
 interface Props {
   applications: ApplicationCardProps["application"][];
@@ -13,9 +13,10 @@ interface Props {
 
 export default function Applications({ applications }: Props) {
   const [showAllApplications, setShowAllApplications] = useState(false);
-  const displayedApplications = showAllApplications
+  const displayedApplications = applications ? showAllApplications
     ? applications
-    : applications.slice(0, 5);
+    : applications.slice(0, 5) : null;
+
 
   return (
     <div className="others-applications-container bg-white p-6">
@@ -40,7 +41,7 @@ export default function Applications({ applications }: Props) {
         Check applications submitted to your job postings.
       </p>
 
-      {displayedApplications.length === 0 ? (
+      {!displayedApplications || displayedApplications.length === 0 ? (
         <NoApplicationUI />
       ) : (
         <div className="flex flex-col gap-4 mt-6">
@@ -50,7 +51,7 @@ export default function Applications({ applications }: Props) {
         </div>
       )}
 
-      {applications.length > 5 && (
+      {(applications && applications.length > 5) && (
         <button
           onClick={() => setShowAllApplications(!showAllApplications)}
           className="mt-8 inline-block bg-gradient-to-r from-indigo-600 to-purple-700 text-sm font-medium text-white hover:opacity-95 px-4 py-2 rounded-lg transition"

@@ -8,9 +8,10 @@ import { statusColors } from "@/Components/dashboard/ApplicationCard";
 export default async function ApplicationDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
+
 
   const application = await prisma.application.findUnique({
     where: { id },
@@ -21,6 +22,7 @@ export default async function ApplicationDetailPage({
       user: true,
     },
   });
+
 
   if (!application) return notFound();
 
@@ -64,7 +66,7 @@ export default async function ApplicationDetailPage({
         <div className="mb-6">
           <span
             className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
-              statusColors[application.status] || "bg-gray-100 text-gray-600"
+              statusColors[application.status ?? "pending"] || "bg-gray-100 text-gray-600"
             }`}
           >
             {application.status

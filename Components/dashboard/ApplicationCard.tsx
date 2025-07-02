@@ -4,34 +4,7 @@ import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import DeleteApplicationMenu from "./DeleteApplicationMenu";
-
-export interface ApplicationCardProps {
-  application: {
-    id: string;
-    jobId: string;
-    userId: string;
-    appliedAt: Date | string;
-    status: string;
-
-    job: {
-      id: string;
-      title: string;
-      description: string;
-      company: string;
-      location: string;
-      type: string;
-      salary?: number;
-      postedAt: Date | string;
-    };
-
-    user: {
-      id: string;
-      name?: string;
-      email: string;
-      image?: string;
-    };
-  };
-}
+import { ApplicationCardProps } from "@/lib/props";
 
 export const statusColors: Record<string, string> = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -56,7 +29,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
         throw new Error(errorData.error || "Failed to update status");
       }
     } catch (err) {
-      console.error(err.message || "Something went wrong");
+      console.error(err || "Something went wrong");
     }
   };
   return (
@@ -68,7 +41,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
             {application.job.title}
             <span
               className={`text-xs font-medium px-3 py-1 rounded-full capitalize ${
-                statusColors[application.status] || "bg-gray-100 text-gray-600"
+                statusColors[application.status ?? ""] || "bg-gray-100 text-gray-600"
               }`}
             >
               {application.status}
@@ -87,7 +60,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
         <div className="flex items-center gap-3">
           <Image
             src={application.user.image || "/default-avatar.png"}
-            alt={application.user.name}
+            alt={application?.user?.name || "User Avatar"}
             width={40}
             height={40}
             className="rounded-full object-cover"

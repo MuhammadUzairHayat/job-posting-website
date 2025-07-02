@@ -11,7 +11,7 @@ export default async function MyApplications() {
 
   const applications = await prisma.application.findMany({
     where: {
-      userId: currentUser.id,
+      userId: currentUser?.id,
       isDeletedByUser: false
     },
     include: {
@@ -46,7 +46,7 @@ export default async function MyApplications() {
                 <p className="font-medium text-gray-900">{app.job.title}</p>
                 <span
                   className={`w-[min-content] text-xs font-medium px-3 py-1 rounded-full capitalize ${
-                    statusColors[app.status] || "bg-gray-100 text-gray-600"
+                    app.status && statusColors[app.status] ? statusColors[app.status] : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   {app.status}
@@ -66,7 +66,7 @@ export default async function MyApplications() {
               </div>
 
               <Link
-                href={`/jobs/${app.job.id}`}
+                href={`dashboard/application/${app.id}`}
                 className="inline-block py-2 text-center text-xs bg-gradient-to-br to-indigo-700 from-blue-700 hover:to-blue-700 hover:from-indigo-700 text-white px-4 rounded-full hover:bg-blue-700 transition"
               >
                 View Application

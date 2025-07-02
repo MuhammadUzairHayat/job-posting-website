@@ -1,9 +1,8 @@
 import PostedJobs from "@/Components/dashboard/PostedJobs";
 import Applications from "@/Components/dashboard/Applications"
-import { JobCardProps } from "@/Components/Jobs/JobCard";
-import { ApplicationCardProps } from "@/Components/dashboard/ApplicationCard";
 import MyApplications from "./MyApplications";
 import "./dashboard.css"
+import { ApplicationCardProps, JobCardProps } from "@/lib/props";
 
 interface Props {
   jobs: JobCardProps["job"][];

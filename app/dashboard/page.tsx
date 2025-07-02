@@ -10,11 +10,13 @@ export default async function DashboardPage() {
   if (!currentUser) return <div className="mt-24 text-center">Please login</div>;
 
   // ✅ Fetch your posted jobs
-  const myJobs = await prisma.job.findMany({
-    where: { postedById: currentUser.id },
-    include: { postedBy: true },
-    orderBy: { postedAt: "desc" },
-  });
+  const myJobs = 
+    (await prisma.job.findMany({
+      where: { postedById: currentUser.id },
+      include: { postedBy: true },
+      orderBy: { postedAt: "desc" },
+    })) || null
+  ;
 
   // ✅ Fetch applications to your jobs
   const jobsApplications = await prisma.application.findMany({
@@ -23,11 +25,15 @@ export default async function DashboardPage() {
       isDeletedByEmployer: false
     },
     include: {
-      job: true,
+      job: {
+        include: {
+          postedBy: true,
+        },
+      },
       user: true,
     },
     orderBy: { appliedAt: "desc" },
-  });
+  }) || null;
 
   // ✅ Fetch jobs *you* have applied to
   const myApplications = await prisma.application.findMany({
@@ -35,8 +41,13 @@ export default async function DashboardPage() {
       userId: currentUser.id,
       isDeletedByUser: false
     },
+    include: {
+      job: true
+    }
   });
 
+  // console.log("Applicants Applications: "+jobsApplications)
+  // console.log("jobs Posted: ", myJobs)
   return (
     <>
       <DashboardHeroSection
