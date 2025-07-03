@@ -11,7 +11,6 @@ export default async function HomePage() {
     take: 4,
   });
 
-  console.log("Database URL:", process.env.DATABASE_URL);
 
   return (
     <main>
