@@ -17,7 +17,7 @@ export default function SuccessMessage({ message, onClose }: Props) {
     }, 5000); // Hide after 5 seconds
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [onClose]);
 
   return (
     <div
