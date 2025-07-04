@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    // console.log("Received body:", body); // 👈 Log incoming data
 
     await prisma.job.create({
       data: {
@@ -16,10 +15,11 @@ export async function POST(req: Request) {
         type: body.type,
         salary: body.salary ? parseInt(body.salary) : null,
         postedAt: new Date(Date.now()),
-        postedById: body.postedById, // Make sure body.postedBy is provided in the request
+        postedById: body.postedById,
       },
     });
-    return NextResponse.redirect("/jobs");
+    // ✅ Use absolute URL for redirect
+    return NextResponse.redirect(new URL("/jobs", req.url));
   } catch (error) {
     console.error("Error creating job:", error);
     return NextResponse.json(
