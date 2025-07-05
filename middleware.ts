@@ -5,10 +5,11 @@ import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
   const token = await getToken({
     req,
-    secret: process.env.AUTH_SECRET, // Make sure this is correct!
-    secureCookie: true, // 👈 Force secure cookies in production
+    secret: process.env.AUTH_SECRET!,
+    secureCookie: process.env.NODE_ENV === "production", // ✅ Use secure cookies on Vercel only
   });
-console.log("🧪 Middleware token:", token); // log token presence
+
+  console.log("🧪 Middleware token:", token); // log token presence
   const isAuthenticated = !!token;
 
   const pathname = req.nextUrl.pathname;
@@ -22,7 +23,7 @@ console.log("🧪 Middleware token:", token); // log token presence
   const isLoginPage = pathname === "/signin";
 
   if (isProtectedRoute && !isAuthenticated) {
-    console.log("this signin is working ??")
+    console.log("this signin is working ??");
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
