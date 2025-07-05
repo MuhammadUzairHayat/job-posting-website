@@ -31,7 +31,7 @@ export default function Footer() {
                 <Link href="/jobs">Jobs</Link>
               </li>
               <li>
-                <Link href="/post-job">Post a Job</Link>
+                <Link href="/postJob">Post a Job</Link>
               </li>
               <li>
                 <Link href="/about">About Us</Link>

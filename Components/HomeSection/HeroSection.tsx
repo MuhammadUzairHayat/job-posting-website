@@ -20,7 +20,7 @@ export default function HeroSection() {
             Browse Jobs
           </Link>
           <Link
-            href="/post-job"
+            href="/postJob"
             className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg text-base font-medium hover:bg-blue-50 transition"
           >
             Post a Job

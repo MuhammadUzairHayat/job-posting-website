@@ -1,7 +1,6 @@
 "use client";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
@@ -11,7 +10,6 @@ export function UserAvatar({
   user?: { name?: string | null; email?: string | null; image?: string | null };
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter()
 
   return (
     <div className="relative ml-2">
@@ -45,10 +43,7 @@ export function UserAvatar({
               </div>
 
               <button
-                onClick={() => {
-                  signOut({ redirect: false });
-                  router.push("/signin");
-                }}
+                onClick={() => signOut({ callbackUrl: "/signin" })}
                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
               >
                 <FaSignOutAlt className="mr-2 duration-100" />
