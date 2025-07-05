@@ -4,6 +4,7 @@ import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  console.log("TOKEN IN MIDDLEWARE:", token); // Check Vercel logs
   const isAuthenticated = !!token;
 
   const pathname = req.nextUrl.pathname;
