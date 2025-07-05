@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
     secret: process.env.AUTH_SECRET, // Make sure this is correct!
     secureCookie: true, // 👈 Force secure cookies in production
   });
-  console.log("TOKEN IN MIDDLEWARE:", token); // Check Vercel logs
+  // console.log("TOKEN IN MIDDLEWARE:", token); // Check Vercel logs
   const isAuthenticated = !!token;
 
   const pathname = req.nextUrl.pathname;
@@ -22,6 +22,7 @@ export async function middleware(req: NextRequest) {
   const isLoginPage = pathname === "/signin";
 
   if (isProtectedRoute && !isAuthenticated) {
+    console.log("this signin is working ??")
     return NextResponse.redirect(new URL("/signin", req.url));
   }
 
