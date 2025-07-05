@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
     secret: process.env.AUTH_SECRET, // Make sure this is correct!
     secureCookie: true, // 👈 Force secure cookies in production
   });
-  // console.log("TOKEN IN MIDDLEWARE:", token); // Check Vercel logs
+console.log("🧪 Middleware token:", token); // log token presence
   const isAuthenticated = !!token;
 
   const pathname = req.nextUrl.pathname;
