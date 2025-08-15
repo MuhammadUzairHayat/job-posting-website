@@ -19,7 +19,8 @@ export async function POST(req: Request) {
         postedById: body.postedById, // Make sure body.postedBy is provided in the request
       },
     });
-    return NextResponse.redirect("/jobs");
+    console.log("is it coming here???")
+    return NextResponse.redirect(new URL("/jobs", req.url));
   } catch (error) {
     console.error("Error creating job:", error);
     return NextResponse.json(

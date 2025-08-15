@@ -6,9 +6,9 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET, // Make sure this is correct!
-    secureCookie: true, // 👈 Force secure cookies in production
   });
-console.log("🧪 Middleware token:", token); // log token presence
+
+  console.log("🧪 Middleware token:", token); // log token presence
   const isAuthenticated = !!token;
 
   const pathname = req.nextUrl.pathname;

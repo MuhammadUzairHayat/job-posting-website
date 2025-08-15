@@ -46,6 +46,7 @@ export default function PostJobForm() {
       // ✅ Clear all form fields
       form.reset();
       setDescription("");
+      window.location.href = "/dashboard";
     } catch (error) {
       setError("Error Occurred in PostJobForm: " + error);
       console.error("Error Occurred in PostJobForm: ", error);
@@ -75,7 +76,7 @@ export default function PostJobForm() {
           name="title"
           placeholder="Job Title"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500"
         />
         <TextEditor value={description} onChange={setDescription} />
         <input
@@ -83,19 +84,19 @@ export default function PostJobForm() {
           name="company"
           placeholder="Company"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500"
         />
         <input
           type="text"
           name="location"
           placeholder="Location"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500"
         />
         <select
           title="type of Job"
           name="type"
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500"
         >
           <option>Full-time</option>
           <option>Part-time</option>
@@ -106,7 +107,7 @@ export default function PostJobForm() {
           type="number"
           name="salary"
           placeholder="Salary (optional)"
-          className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500"
         />
         <button
           type="submit"
