@@ -66,16 +66,16 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-white mb-2">Follow Us</h4>
             <div className="flex gap-4 mt-2">
-              <a href="#" className="hover:text-white">
+              <a href="https://facebook.com" className="hover:text-white">
                 <Facebook />
               </a>
-              <a href="#" className="hover:text-white">
+              <a href="https://x.com" className="hover:text-white">
                 <Twitter />
               </a>
-              <a href="#" className="hover:text-white">
+                <a href="https://pk.linkedin.com" className="hover:text-white">
                 <Linkedin />
-              </a>
-              <a href="#" className="hover:text-white">
+                </a>
+              <a href="https://github.com" className="hover:text-white">
                 <Github />
               </a>
             </div>

@@ -30,7 +30,7 @@ export default function SearchBar({
         name="post"
         placeholder="Search title, company, description..."
         defaultValue={postValue}
-        className="border rounded px-4 py-2 w-80"
+        className="border border-gray-200 rounded px-4 py-2 w-80"
       />
       <label htmlFor="location-input" className="sr-only">
         Location
@@ -41,20 +41,20 @@ export default function SearchBar({
         name="location"
         placeholder="Location"
         defaultValue={locationValue}
-        className="border rounded px-4 py-2 w-40"
+        className="border border-gray-200 rounded px-4 py-2 w-40"
         aria-label="Location"
       />
       <select
         name="type"
         defaultValue={typeValue}
-        className="border rounded px-3 py-2"
+        className="border border-gray-200 rounded px-3 py-2"
         aria-label="Job Type"
       >
-        <option value="">All Types</option>
-        <option value="Full-time">Full-time</option>
-        <option value="Part-time">Part-time</option>
-        <option value="Internship">Internship</option>
-        <option value="Remote">Remote</option>
+        <option className="border-gray-200" value="">All Types</option>
+        <option className="border-gray-200" value="Full-time">Full-time</option>
+        <option className="border-gray-200" value="Part-time">Part-time</option>
+        <option className="border-gray-200" value="Internship">Internship</option>
+        <option className="border-gray-200" value="Remote">Remote</option>
         {/* Add more types as needed */}
       </select>
 

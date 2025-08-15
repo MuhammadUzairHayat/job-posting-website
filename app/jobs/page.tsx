@@ -53,7 +53,56 @@ export default async function JobsPage({
         {jobs.length > 0 ? (
           jobs.map((job: Job) => <JobCard key={job.id} job={job} />)
         ) : (
-          <p className="text-center col-span-full">No jobs found.</p>
+            <div className="flex flex-col items-center justify-center col-span-full py-12 animate-fade-in">
+  <svg
+    className="w-16 h-16 text-gray-300 mb-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.5}
+    viewBox="0 0 48 48"
+  >
+    {/* Magnifying glass */}
+    <circle
+      cx="21"
+      cy="21"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="2.5"
+    />
+    <line
+      x1="28"
+      y1="28"
+      x2="38"
+      y2="38"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+    />
+    {/* Briefcase inside */}
+    <rect
+      x="16"
+      y="17"
+      width="10"
+      height="7"
+      rx="1.5"
+      stroke="#9ca3af"
+      strokeWidth="1.8"
+      fill="none"
+    />
+    <path
+      d="M18 17v-1.5a1.5 1.5 0 0 1 1.5-1.5h3a1.5 1.5 0 0 1 1.5 1.5V17"
+      stroke="#9ca3af"
+      strokeWidth="1.8"
+      fill="none"
+    />
+  </svg>
+  <p className="text-center text-gray-500 text-lg font-medium">
+    No jobs found.
+    <br />
+    Try adjusting your filters.
+  </p>
+</div>
+
         )}
       </div>
     </div>

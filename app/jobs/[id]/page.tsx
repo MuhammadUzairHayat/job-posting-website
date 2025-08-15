@@ -27,8 +27,8 @@ export default async function SingleJobPage({
 
   const session = await auth();
 
-  console.log("jobID : " + jobId);
-  console.log("applied: " + applied);
+  // console.log("jobID : " + jobId);
+  // console.log("applied: " + applied);
   const getAppliedStatus = (value?: string): AppliedStatus => {
     if (value && ["success", "already", "error"].includes(value)) {
       return value as AppliedStatus;
