@@ -9,7 +9,7 @@ type Props = {
 
 export default function SuccessMessage({ message, onClose }: Props) {
   const [visible, setVisible] = useState(true);
-  console.log(message)
+  // console.log(message)
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);

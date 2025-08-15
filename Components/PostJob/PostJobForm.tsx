@@ -13,7 +13,7 @@ export default function PostJobForm() {
   const [error, setError] = useState<string | null>(null);
   const { data: session } = useSession();
 
-  console.log(session?.user?.id)
+  // console.log(session?.user?.id)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
