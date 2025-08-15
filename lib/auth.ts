@@ -8,17 +8,6 @@ import { prisma } from "@/lib/prisma";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
-  cookies: {
-    sessionToken: {
-      name: "__Secure-next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: true, // 🔐 This is CRITICAL for Vercel HTTPS
-      },
-    },
-  },
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,

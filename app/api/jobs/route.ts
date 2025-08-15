@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic"; // 🚫 no cache for this API
+export const revalidate = 0; // 🚫 no ISR
+
 import { prisma } from "@/lib/prisma";
 import { JobCardProps } from "@/lib/props";
 import { NextResponse } from "next/server";
@@ -5,7 +8,6 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    // console.log("Received body:", body); // 👈 Log incoming data
 
     await prisma.job.create({
       data: {
@@ -15,11 +17,13 @@ export async function POST(req: Request) {
         location: body.location,
         type: body.type,
         salary: body.salary ? parseInt(body.salary) : null,
-        postedAt: new Date(Date.now()),
-        postedById: body.postedById, // Make sure body.postedBy is provided in the request
+        postedAt: new Date(),
+        postedById: body.postedById,
       },
     });
-    console.log("is it coming here???")
+
+    console.log("Job created successfully");
+
     return NextResponse.redirect(new URL("/jobs", req.url));
   } catch (error) {
     console.error("Error creating job:", error);
