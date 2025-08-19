@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import PostedJobs from "@/Components/dashboard/PostedJobs";
 import Applications from "@/Components/dashboard/Applications";
 import MyApplicationsClient from "@/Components/dashboard/MyApplicationsClient";
@@ -19,6 +19,13 @@ interface Props {
 
 export default function DashboardTabs({ jobs, applicationsToMyJobs, myApplications, user }: Props) {
   const [active, setActive] = useState<"profile" | "jobs" | "applications" | "myApplications">("jobs");
+
+  // Activate profile tab if URL hash is #profile-info
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#profile-info") {
+      setActive("profile");
+    }
+  }, []);
 
   return (
     <div className="bg-white rounded-lg">

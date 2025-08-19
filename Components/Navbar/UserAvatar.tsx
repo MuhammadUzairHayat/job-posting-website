@@ -45,7 +45,7 @@ export function UserAvatar({
               </div>
 
               <Link
-                href={"/profile"}
+                href={"/dashboard#profile-info"}
                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
               >
                 <User size={16} className="mr-2 duration-100" />

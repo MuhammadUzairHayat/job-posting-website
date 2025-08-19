@@ -52,7 +52,11 @@ export default async function JobsPage({
 
   return (
     <div className="mt-24 mb-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h1 className="text-3xl sm:text-4xl font-bold text-center mb-10">Explore Jobs</h1>
+      <div className="text-center mb-6">
+        <span className="inline-block mb-3 px-3 py-1.5 text-xs font-medium rounded-full bg-blue-50 text-blue-700 tracking-wider">JOBS</span>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900">Explore Jobs</h1>
+        <p className="text-gray-600 max-w-2xl mx-auto mt-2 text-sm sm:text-base">Find roles that match your skills and interests. Use filters to narrow your search.</p>
+      </div>
       <SearchBar defaultLocation={location} defaultType={type} defaultPost={post} />
       <JobsGrid location={location} type={type} post={post} />
 

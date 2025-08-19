@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Search, MapPin, Briefcase } from "lucide-react";
 
 interface SearchBarProps {
   defaultLocation?: string;
@@ -21,47 +22,68 @@ export default function SearchBar({
     <form
       method="GET"
       action="/jobs"
-      className="flex flex-wrap gap-2 justify-center mb-6"
+      className="relative bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 rounded-2xl border border-gray-200 shadow-sm p-3 sm:p-4 mb-6"
+      aria-label="Job search form"
     >
-      <input
-        type="text"
-        name="post"
-        placeholder="Search title, company, description..."
-        defaultValue={postValue}
-        className="border border-gray-200 rounded px-4 py-2 w-80"
-      />
-      <label htmlFor="location-input" className="sr-only">
-        Location
-      </label>
-      <input
-        id="location-input"
-        type="text"
-        name="location"
-        placeholder="Location"
-        defaultValue={locationValue}
-        className="border border-gray-200 rounded px-4 py-2 w-40"
-        aria-label="Location"
-      />
-      <select
-        name="type"
-        defaultValue={typeValue}
-        className="border border-gray-200 rounded px-3 py-2"
-        aria-label="Job Type"
-      >
-        <option className="border-gray-200" value="">All Types</option>
-        <option className="border-gray-200" value="Full-time">Full-time</option>
-        <option className="border-gray-200" value="Part-time">Part-time</option>
-        <option className="border-gray-200" value="Internship">Internship</option>
-        <option className="border-gray-200" value="Remote">Remote</option>
-        {/* Add more types as needed */}
-      </select>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_260px_200px_auto] gap-3 items-center">
+        {/* Post/keyword */}
+        <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <Search className="w-4 h-4 text-gray-400" aria-hidden="true" />
+          <input
+            type="text"
+            name="post"
+            placeholder="Search title, company, description..."
+            defaultValue={postValue}
+            className="w-full outline-none placeholder:text-gray-400 text-sm"
+            aria-label="Search keywords"
+          />
+        </div>
 
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Search
-      </button>
+        {/* Location */}
+        <label htmlFor="location-input" className="sr-only">
+          Location
+        </label>
+        <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <MapPin className="w-4 h-4 text-gray-400" aria-hidden="true" />
+          <input
+            id="location-input"
+            type="text"
+            name="location"
+            placeholder="Location"
+            defaultValue={locationValue}
+            className="w-full outline-none placeholder:text-gray-400 text-sm"
+            aria-label="Location"
+          />
+        </div>
+
+        {/* Type */}
+        <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2.5 focus-within:ring-2 focus-within:ring-blue-500">
+          <Briefcase className="w-4 h-4 text-gray-400" aria-hidden="true" />
+          <select
+            name="type"
+            defaultValue={typeValue}
+            className="w-full bg-transparent outline-none text-sm"
+            aria-label="Job type"
+          >
+            <option value="">All Types</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+            <option value="Remote">Remote</option>
+          </select>
+        </div>
+
+        {/* Submit */}
+        <div className="flex md:justify-end">
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl hover:from-blue-700 hover:to-indigo-800 shadow-sm"
+          >
+            <Search className="w-4 h-4" aria-hidden="true" />
+            Search
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
