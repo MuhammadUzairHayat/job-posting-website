@@ -17,6 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Add this for smoother animations */}
+        <link
+          rel="preload"
+          href="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"
+          as="script"
+        />
+      </head>
       <body className={`${outfit.className} bg-slate-50`}>
         <AuthSessionProvider>
           <div className="bg-gray-50">

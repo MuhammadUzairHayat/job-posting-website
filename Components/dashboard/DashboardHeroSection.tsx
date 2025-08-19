@@ -20,18 +20,21 @@ const DashboardHeroSection: React.FC<DashboardHeroSectionProps> = ({
       value: totalPostedJobs,
       icon: <Briefcase className="w-6 h-6 text-indigo-600" />,
       bg: "bg-indigo-50",
+      bc: "border-indigo-200"
     },
     {
       title: "Applications Received",
       value: totalReceivedApplications,
       icon: <FileText className="w-6 h-6 text-green-600" />,
       bg: "bg-green-50",
+      bc: "border-green-200",
     },
     {
       title: "Jobs You Applied",
       value: totalAppliedJobs,
       icon: <UserCheck className="w-6 h-6 text-blue-600" />,
       bg: "bg-blue-50",
+      bc: "border-blue-200",
     },
   ];
 
@@ -46,9 +49,9 @@ const DashboardHeroSection: React.FC<DashboardHeroSectionProps> = ({
           {stats.map((item) => (
             <div
               key={item.title}
-              className={`rounded-xl p-4 sm:p-5 flex items-center gap-4 hover-lift shine-on-hover ${item.bg}`}
+              className={`rounded-xl p-4 sm:p-5 flex items-center gap-4 shine-on-hover ${item.bg}`}
             >
-              <div className="p-2 sm:p-3 rounded-full bg-white border">{item.icon}</div>
+              <div className={`p-2 sm:p-3 rounded-full bg-white border ${item.bc}`}>{item.icon}</div>
               <div>
                 <p className="text-gray-500 text-xs sm:text-sm">{item.title}</p>
                 <p className="text-lg sm:text-xl font-semibold text-gray-800">{item.value}</p>

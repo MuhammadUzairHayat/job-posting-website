@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
+
 export function UserAvatar({
   user,
 }: {
@@ -34,7 +35,7 @@ export function UserAvatar({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-black ring-opacity-5 animate-fade-in">
+        <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-blue-200 ring-opacity-5 animate-fade-in">
           {user ? (
             <div className="py-2">
               <div className="px-4 py-2 border-b border-gray-200">

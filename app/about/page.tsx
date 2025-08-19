@@ -1,7 +1,9 @@
+"use client";
 import { ovo } from "@/lib/fonts";
 import Image from "next/image";
 import { assets } from "@/public/assets";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function AboutUs() {
   const teamMembers = [
@@ -10,39 +12,65 @@ export default function AboutUs() {
       pic: assets.myPic,
       role: "Founder",
       accent: "from-blue-300 to-blue-200",
+      linkedin: "https://linkedin.com/in/muhammad-uzair", // 🔗 add your real link
+      twitter: "https://twitter.com/muhammad-uzair", // 🔗 add your real link
     },
     {
       name: "Muhammad Zakarya",
       pic: assets.pic2,
       role: "Chief Technology Officer",
       accent: "from-blue-300 to-blue-200",
+      linkedin: "https://linkedin.com/in/muhammad-zakarya",
+      twitter: "https://twitter.com/muhammad-zakarya",
     },
     {
       name: "Muhammad Danyal",
       pic: assets.pic3,
       role: "Head of Employer Success",
       accent: "from-blue-300 to-blue-200",
+      linkedin: "https://linkedin.com/in/muhammad-danyal",
+      twitter: "https://twitter.com/muhammad-danyal",
     },
     {
       name: "Muhammad Khan",
       pic: assets.pic4,
       role: "Lead Product Strategist",
       accent: "from-blue-300 to-blue-200",
+      linkedin: "https://linkedin.com/in/muhammad-khan",
+      twitter: "https://twitter.com/muhammad-khan",
     },
   ];
 
   const stats = [
-    { value: "85K+", label: "Live job postings", trend: "↑15% this month" },
-    { value: "1.2M+", label: "Successful hires", trend: "↑30% YoY" },
-    { value: "12K+", label: "Hiring companies", trend: "↑20% YoY" },
-    { value: "97%", label: "Employer satisfaction", trend: "Industry-leading" },
+    { value: "50+", label: "Job postings listed", trend: "Growing daily" },
+    {
+      value: "120+",
+      label: "Registered job seekers",
+      trend: "Actively applying",
+    },
+    {
+      value: "20+",
+      label: "Companies onboarded",
+      trend: "Expanding network",
+    },
+    {
+      value: "100%",
+      label: "Free to post & apply",
+      trend: "Early access offer",
+    },
   ];
 
   return (
     <section className="min-h-screen bg-neutral-50 py-24 px-6 sm:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Hero */}
-        <div className="text-center mb-28 reveal">
+        <motion.div
+          initial={{ opacity: 0, y: 50, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-28"
+        >
           <span className="inline-block mb-4 px-3 py-1.5 text-xs font-medium  rounded-full bg-blue-50 text-blue-600 tracking-wider">
             WHO WE ARE
           </span>
@@ -61,10 +89,16 @@ export default function AboutUs() {
               career move — faster, smarter, and easier.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Value Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32 reveal stagger-6">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32  reveal stagger-6"
+        >
           <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100 hover-lift shine-on-hover">
             <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
               {/* Icon */}
@@ -199,10 +233,18 @@ export default function AboutUs() {
               </svg>
             </a>
           </div>
-        </div>
+        </motion.div>
 
         {/* Leadership */}
-        <div className="mb-32 reveal">
+        {/* Leadership */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="mb-32 reveal"
+        >
+          {" "}
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
             <div>
               <h2 className="text-3xl font-light text-gray-900 mb-2">
@@ -217,7 +259,6 @@ export default function AboutUs() {
               Meet the team
             </button>
           </div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal stagger-12">
             {teamMembers.map((member, index) => (
               <div
@@ -270,10 +311,16 @@ export default function AboutUs() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Stats */}
-        <div className="mb-32 reveal">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mb-32 reveal"
+        >
           <h2 className="text-3xl font-light text-gray-900 mb-12 text-center">
             Making hiring happen
           </h2>
@@ -291,10 +338,16 @@ export default function AboutUs() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* CTA */}
-        <div className="bg-gray-900 rounded-2xl p-12 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="bg-gray-900 rounded-2xl p-12 text-center"
+        >
           <h2 className="text-3xl font-light text-white mb-4">
             Hire better. Get hired faster.
           </h2>
@@ -303,14 +356,20 @@ export default function AboutUs() {
             ready for your next role, our platform makes it happen.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href={"./postJob"} className="px-7 py-3.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors">
+            <Link
+              href={"./postJob"}
+              className="px-7 py-3.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+            >
               Post a job
             </Link>
-            <Link href={"./jobs"} className="px-7 py-3.5 bg-transparent text-white border border-gray-700 rounded-lg font-medium hover:bg-gray-800 transition-colors">
+            <Link
+              href={"./jobs"}
+              className="px-7 py-3.5 bg-transparent text-white border border-gray-700 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+            >
               Browse jobs
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

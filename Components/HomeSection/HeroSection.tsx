@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -19,8 +19,18 @@ export default function HeroSection() {
         <div className="absolute bottom-16 right-16 w-2 h-2 rounded-full bg-indigo-300/50 hero-pulse" />
 
         {/* Progress path line */}
-        <svg className="absolute left-6 bottom-10 w-40 h-32 text-blue-400/30 hero-float" viewBox="0 0 160 128" fill="none">
-          <path d="M4 120 C 32 96, 64 88, 90 72 C 118 54, 132 36, 156 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          className="absolute left-6 bottom-10 w-40 h-32 text-blue-400/30 hero-float"
+          viewBox="0 0 160 128"
+          fill="none"
+        >
+          <path
+            d="M4 120 C 32 96, 64 88, 90 72 C 118 54, 132 36, 156 16"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
           <circle cx="156" cy="16" r="3" fill="currentColor" />
         </svg>
 
@@ -55,11 +65,15 @@ export default function HeroSection() {
       </div>
 
       <div className="relative max-w-6xl mx-auto text-center reveal">
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-          Discover Your Next <span className="text-blue-600">Career Move</span>
+        <h1
+          className="text-3xl sm:text-5xl md:text-6xl
+         font-bold text-gray-900 leading-tight mb-6"
+        >
+          Discover Your Next <span className="text-blue-600 font-extrabold">Career Move</span>
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
-          Find jobs that match your skills and interests. Join thousands of professionals growing their careers on our platform.
+          Find jobs that match your skills and interests. Join thousands of
+          professionals growing their careers on our platform.
         </p>
         <div className="flex justify-center gap-4">
           <Link

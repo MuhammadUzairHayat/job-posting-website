@@ -12,7 +12,7 @@ export default function HomeJobSection({ jobs }: HomeJobSectionProps) {
   return (
     <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6 reveal">
-        <h2 className="text-2xl font-bold">Recent Job Posts</h2>
+        <h2 className="text-2xl font-light">Recent Job Posts</h2>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 reveal stagger-12">

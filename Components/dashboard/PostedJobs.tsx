@@ -39,7 +39,7 @@ export default function PostedJobs({ jobs }: Props) {
   };
 
   return (
-    <div className="bg-white p-4 sm:p-6">
+    <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
       <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ export default function PostedJobs({ jobs }: Props) {
               <select
                 value={rowsPerPage}
                 onChange={handleRowsChange}
-                className="border rounded px-2 py-1 text-xs"
+                className="border rounded-lg px-2 py-1.5 text-xs bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 aria-label="Rows per page"
               >
                 {[6, 12, 24, 48].map((n) => (
@@ -95,14 +95,14 @@ export default function PostedJobs({ jobs }: Props) {
               <button
                 onClick={goFirst}
                 disabled={currentPage === 1}
-                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+                className="px-3 py-1.5 text-sm rounded-lg border bg-gradient-to-b from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 text-gray-700 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xs"
               >
                 <span className="max-[380px]:hidden">« </span>First
               </button>
               <button
                 onClick={goPrev}
                 disabled={currentPage === 1}
-                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+                className="px-3 py-1.5 text-sm rounded-lg border bg-gradient-to-b from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 text-gray-700 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xs"
               >
                 <span className="max-[380px]:hidden">‹ </span>Prev
               </button>
@@ -110,7 +110,7 @@ export default function PostedJobs({ jobs }: Props) {
                 <input
                   value={pageInput}
                   onChange={(e) => setPageInput(e.target.value)}
-                  className="w-12 border rounded px-2 py-1 text-sm text-center"
+                  className="w-12 border rounded-lg px-2 py-1.5 text-sm text-center bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   aria-label="Page number"
                 />
                 <span className="text-xs text-gray-500">/ {totalPages}</span>
@@ -118,14 +118,14 @@ export default function PostedJobs({ jobs }: Props) {
               <button
                 onClick={goNext}
                 disabled={currentPage === totalPages}
-                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+                className="px-3 py-1.5 text-sm rounded-lg border bg-gradient-to-b from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 text-gray-700 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xs"
               >
                 Next<span className="max-[380px]:hidden"> ›</span>
               </button>
               <button
                 onClick={goLast}
                 disabled={currentPage === totalPages}
-                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+                className="px-3 py-1.5 text-sm rounded-lg border bg-gradient-to-b from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 text-gray-700 hover:text-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-xs"
               >
                 Last<span className="max-[380px]:hidden"> »</span>
               </button>
