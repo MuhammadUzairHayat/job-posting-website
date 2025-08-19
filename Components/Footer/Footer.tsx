@@ -34,7 +34,7 @@ export default function Footer() {
                 <Link href="/postJob">Post a Job</Link>
               </li>
               <li>
-                <Link href="/about">About Us</Link>
+                <Link href="/contacts">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -49,13 +49,13 @@ export default function Footer() {
                 <Link href="/contact">Contact Us</Link>
               </li>
               <li>
-                <Link href="/faq">FAQs</Link>
+                <Link href="/faqs">FAQs</Link>
               </li>
               <li>
-                <Link href="/terms">Terms of Service</Link>
+                <Link href="#">Terms of Service</Link>
               </li>
               <li>
-                <Link href="/privacy">Privacy Policy</Link>
+                <Link href="#">Privacy Policy</Link>
               </li>
             </ul>
           </div>
@@ -85,8 +85,10 @@ export default function Footer() {
 
       {/* Footer Bottom */}
       <div className="border-t border-gray-700 mt-10 pt-6 text-sm text-center text-gray-500">
-        © {new Date().getFullYear()} JobBoard. All rights reserved.
+        © {new Date().getFullYear()} JobBoard. All rights reserved. <br />
+        Made by <span className="text-blue-600">Muhammad Uzair</span>.
       </div>
+
     </footer>
   );
 }

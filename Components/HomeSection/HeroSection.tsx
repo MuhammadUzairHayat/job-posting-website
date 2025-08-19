@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 export default function HeroSection() {
   return (
-    <section className="mt-[4rem] bg-gradient-to-br from-blue-50 to-blue-100 py-28 px-6">
+    <section className="mt-[4rem] bg-gradient-to-br from-blue-50 to-blue-100 px-4 sm:px-6 py-16 sm:py-24 md:py-28">
       <div className="max-w-6xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
           Discover Your Next <span className="text-blue-600">Career Move</span>
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">

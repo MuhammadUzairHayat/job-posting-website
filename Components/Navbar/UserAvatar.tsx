@@ -1,6 +1,8 @@
 "use client";
+import { User } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
@@ -42,6 +44,13 @@ export function UserAvatar({
                 <p className="text-sm text-gray-500 truncate">{user.email}</p>
               </div>
 
+              <Link
+                href={"/profile"}
+                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
+              >
+                <User size={16} className="mr-2 duration-100" />
+                Profile
+              </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/signin" })}
                 className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"

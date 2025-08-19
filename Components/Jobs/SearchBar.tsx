@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { useSearchParams } from "next/navigation";
 
 interface SearchBarProps {
   defaultLocation?: string;
@@ -14,10 +13,9 @@ export default function SearchBar({
   defaultType = "",
   defaultPost = "",
 }: SearchBarProps) {
-  const searchParams = useSearchParams();
-  const locationValue = searchParams.get("location") || defaultLocation;
-  const typeValue = searchParams.get("type") || defaultType;
-  const postValue = searchParams.get("post") || defaultPost;
+  const locationValue = defaultLocation;
+  const typeValue = defaultType;
+  const postValue = defaultPost;
 
   return (
     <form

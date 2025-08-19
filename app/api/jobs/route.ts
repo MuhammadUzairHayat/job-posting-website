@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("Job created successfully");
+    // console.log("Job created successfully");
 
     return NextResponse.redirect(new URL("/jobs", req.url));
   } catch (error) {
@@ -39,6 +39,10 @@ export async function GET(req: Request) {
   const location = searchParams.get("location") || "";
   const type = searchParams.get("type") || "";
   const post = searchParams.get("post") || "";
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const pageSizeParam = parseInt(searchParams.get("pageSize") || "12", 10);
+  const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
+  const pageSize = Number.isFinite(pageSizeParam) && pageSizeParam > 0 ? pageSizeParam : 12;
 
   const where: Record<string, unknown> = {};
 
@@ -56,13 +60,17 @@ export async function GET(req: Request) {
     ];
   }
 
+  const total = await prisma.job.count({ where });
+
   const jobs: JobCardProps["job"][] = await prisma.job.findMany({
     where,
     orderBy: { postedAt: "desc" },
     include: {
       postedBy: true,
     },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
 
-  return NextResponse.json({ jobs });
+  return NextResponse.json({ jobs, total, page, pageSize });
 }

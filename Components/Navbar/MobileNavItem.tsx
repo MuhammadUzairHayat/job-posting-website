@@ -26,7 +26,7 @@ const MobileNavItem: React.FC<MobileNavItemProps> = ({ href, label, variant, onC
       <Link 
         href={href}
         onClick={onClick}
-        className="block px-3 py-3 text-base font-medium text-gray-700 border border-gray-300 rounded-md"
+        className="block px-3 py-3 text-base text-center font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-slate-100"
       >
         {label}
       </Link>

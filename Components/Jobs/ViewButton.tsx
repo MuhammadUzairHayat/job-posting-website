@@ -9,7 +9,7 @@ const ViewButton = ({jobId}: jobIDProp) => {
     <Link
           href={`/jobs/${jobId}`}
           prefetch={true}
-          className=" text-sm bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 py-2 rounded hover:from-blue-700 hover:to-purple-700 transition"
+          className="w-full sm:w-auto text-center text-sm bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-4 py-2 rounded hover:from-blue-700 hover:to-purple-700 transition"
         >
           View Job
         </Link>

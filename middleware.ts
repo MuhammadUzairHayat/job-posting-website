@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest) {
 		secureCookie: process.env.NODE_ENV === "production",
 	});
 
-	console.log("🧪 Middleware token:", token);
+	// console.log("🧪 Middleware token:", token);
 	const isAuthenticated = !!token;
 
 	const pathname = req.nextUrl.pathname;

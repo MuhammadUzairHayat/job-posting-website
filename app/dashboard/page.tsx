@@ -1,12 +1,14 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import DashboardContent from "@/Components/dashboard/DashboardContent";
 import DashboardHeroSection from "@/Components/dashboard/DashboardHeroSection";
 import { ApplicationCardProps, JobCardProps } from "@/lib/props";
+import DashboardTabs from "@/Components/dashboard/DashboardTabs";
+import UserDetail from "@/Components/dashboard/UserDetail";
 
 export default async function DashboardPage() {
   const session = await auth();
   const currentUser = session?.user;
+  // let activeTab = "";
 
   if (!currentUser)
     return <div className="mt-24 text-center">Please login</div>;
@@ -51,17 +53,21 @@ export default async function DashboardPage() {
       },
     });
 
-  // console.log("Applicants Applications: "+jobsApplications)
-  // console.log("jobs Posted: ", myJobs)
   return (
-    <>
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-6">
+      <UserDetail user={currentUser} />
       <DashboardHeroSection
         totalPostedJobs={myJobs.length}
         totalReceivedApplications={jobsApplications.length}
         totalAppliedJobs={myApplications.length}
       />
 
-      <DashboardContent jobs={myJobs} applications={jobsApplications} />
-    </>
+      <DashboardTabs
+        jobs={myJobs}
+        applicationsToMyJobs={jobsApplications}
+        myApplications={myApplications}
+        user={{ name: currentUser.name, email: currentUser.email ?? "", image: currentUser.image }}
+      />
+    </div>
   );
 }

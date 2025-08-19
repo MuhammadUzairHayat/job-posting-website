@@ -1,6 +1,8 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { auth } from "@/lib/auth";
 import Image from "next/image";
 import { ovo } from "@/lib/fonts";
 import { statusColors } from "@/Components/dashboard/ApplicationCard";
@@ -11,6 +13,8 @@ export default async function ApplicationDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const session = await auth();
+  const userId = session?.user?.id;
 
   const application = await prisma.application.findUnique({
     where: { id },
@@ -25,6 +29,7 @@ export default async function ApplicationDetailPage({
   });
 
   if (!application) return notFound();
+  const isOwner = userId && application.userId === userId;
 
   return (
     <div className="max-w-3xl mx-auto my-24 px-4 ">
@@ -75,6 +80,14 @@ export default async function ApplicationDetailPage({
                 application.status.slice(1)
               : "Pending"}
           </span>
+          {isOwner && (
+            <Link
+              href={`/dashboard/application/${application.id}/edit`}
+              className="ml-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-indigo-700 hover:to-blue-700"
+            >
+              Edit
+            </Link>
+          )}
         </div>
 
         {/* Contact Info */}

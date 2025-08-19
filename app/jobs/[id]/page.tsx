@@ -47,6 +47,18 @@ export default async function SingleJobPage({
   if (!job) return notFound();
 
   const isOwner = currentUserId && job.postedById === currentUserId;
+  // Check if current user has already applied to this job
+  const existingApplication = currentUserId
+    ? await prisma.application.findFirst({
+        where: {
+          userId: currentUserId,
+          jobId: jobId,
+          isDeletedByUser: false,
+        },
+        select: { id: true },
+      })
+    : null;
+  const isApplied = Boolean(existingApplication);
 
   return (
     <div className="max-w-4xl mx-auto  my-20 px-4">
@@ -66,12 +78,12 @@ export default async function SingleJobPage({
         {/* ===== HEADER ===== */}
         <header className="mb-6 border-b pb-4 border-gray-200">
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <h1 className="text-3xl font-bold text-gray-900">{job.title}</h1>
+            <h1 className={` text-3xl  text-gray-900 font-light`}>{job.title}</h1>
             <span className="text-sm font-semibold px-3 py-1 rounded-full bg-gradient-to-r from-blue-100 to-blue-200 text-blue-800 shadow-sm">
               {job.type}
             </span>
           </div>
-          <div className="text-gray-600 mt-2 space-y-1 text-sm">
+          <div className="text-gray-600 space-y-1 text-sm flex flex-col gap-2 mt-8">
             <p className="flex items-center gap-2">
               <Briefcase className="w-4 h-4" /> {job.company}
             </p>
@@ -126,27 +138,53 @@ export default async function SingleJobPage({
           {/* Buttons */}
           <div className="flex gap-3 items-center">
             {!isOwner && (
-              // <ApplyButton jobId={job.id} applied={applied} />
-              <Link
-                href={`/apply-job/${job.id}?applied=${appliedStatus}`}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600  text-white font-semibold shadow-md hover:from-indigo-700 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+              isApplied ? (
+                <button
+                  type="button"
+                  disabled
+                  aria-disabled="true"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gray-200 text-gray-600 font-semibold shadow-inner cursor-not-allowed"
+                  title="You have already applied to this job"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12h6m2 9H7a2 2 0 01-2-2V7a2 2 0 012-2h3V4a1 1 0 011-1h2a1 1 0 011 1v1h3a2 2 0 012 2v12a2 2 0 01-2 2z"
-                  />
-                </svg>
-                Apply Now
-              </Link>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Applied
+                </button>
+              ) : (
+                // <ApplyButton jobId={job.id} applied={applied} />
+                <Link
+                  href={`/apply-job/${job.id}?applied=${appliedStatus}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600  text-white font-semibold shadow-md hover:from-indigo-700 hover:to-blue-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12h6m2 9H7a2 2 0 01-2-2V7a2 2 0 012-2h3V4a1 1 0 011-1h2a1 1 0 011 1v1h3a2 2 0 012 2v12a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  Apply Now
+                </Link>
+              )
             )}
             {isOwner && (
               <>

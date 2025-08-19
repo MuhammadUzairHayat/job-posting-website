@@ -39,10 +39,10 @@ export default function HomeCTASection() {
         </div>
 
         <Link
-          href="/jobs"
+          href="/about"
           className="inline-block bg-white text-blue-900 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 mt-4 transition"
         >
-          Explore Opportunities
+          Who we Are
         </Link>
       </div>
     </section>

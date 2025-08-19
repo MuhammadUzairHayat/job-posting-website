@@ -27,8 +27,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
+    { href: "/", label: "Home", session: true },
+    { href: "/about", label: "About", session: true },
     { href: "/dashboard", label: "Dashboard", session: true },
-    { href: "/jobs", label: "Browse Jobs", session: true },
+    { href: "/jobs", label: "Jobs", session: true },
+    { href: "/contacts", label: "contacts", session: true },
     {
       href: "/signin",
       label: "Sign In",
@@ -46,7 +49,7 @@ const Navbar = () => {
           : "bg-white/90 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo/Brand */}
           <div className="flex">

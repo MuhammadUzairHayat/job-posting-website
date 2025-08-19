@@ -1,7 +1,7 @@
 // Components/Dashboard/PostedJobs.tsx
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import JobCard from "@/Components/Jobs/JobCard";
 import NoPostedJobUI from "./NoPostedJobUI";
 import { JobCardProps } from "@/lib/props";
@@ -11,11 +11,35 @@ interface Props {
 }
 
 export default function PostedJobs({ jobs }: Props) {
-  const [showAllJobs, setShowAllJobs] = useState(false);
-  const displayedJobs = showAllJobs ? jobs : jobs.slice(0, 4);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(6);
+
+  const totalPages = Math.max(1, Math.ceil(jobs.length / rowsPerPage));
+  const currentItems = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    return jobs.slice(start, start + rowsPerPage);
+  }, [jobs, currentPage, rowsPerPage]);
+
+  const goFirst = () => setCurrentPage(1);
+  const goPrev = () => setCurrentPage((p) => Math.max(1, p - 1));
+  const goNext = () => setCurrentPage((p) => Math.min(totalPages, p + 1));
+  const goLast = () => setCurrentPage(totalPages);
+
+  const handleRowsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = Number(e.target.value);
+    setRowsPerPage(value);
+    setCurrentPage(1);
+  };
+
+  const [pageInput, setPageInput] = useState<string>("1");
+  const handlePageJump = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const n = Math.max(1, Math.min(totalPages, Number(pageInput)));
+    if (!Number.isNaN(n)) setCurrentPage(n);
+  };
 
   return (
-    <div className="bg-white p-6">
+    <div className="bg-white p-4 sm:p-6">
       <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -37,23 +61,77 @@ export default function PostedJobs({ jobs }: Props) {
         View and manage all job listings you have created.
       </p>
 
-      {displayedJobs.length === 0 ? (
+      {jobs.length === 0 ? (
         <NoPostedJobUI />
       ) : (
-        <div className="flex flex-col gap-4 mt-6">
-          {displayedJobs.map((job) => (
-            <JobCard key={job.id} job={job} />
-          ))}
-        </div>
-      )}
+        <>
+          <div className="grid gap-4 mt-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+            {currentItems.map((job) => (
+              <JobCard key={job.id} job={job} />
+            ))}
+          </div>
 
-      {jobs.length > 4 && (
-        <button
-          onClick={() => setShowAllJobs(!showAllJobs)}
-          className="mt-8 inline-block text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:opacity-95 px-4 py-2 rounded-lg transition"
-        >
-          {showAllJobs ? "View Less Jobs" : "View More Jobs"}
-        </button>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-gray-500">Rows per page:</span>
+              <select
+                value={rowsPerPage}
+                onChange={handleRowsChange}
+                className="border rounded px-2 py-1 text-xs"
+                aria-label="Rows per page"
+              >
+                {[6, 12, 24, 48].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+              <span className="text-gray-500">
+                Showing {(currentPage - 1) * rowsPerPage + 1}-
+                {Math.min(currentPage * rowsPerPage, jobs.length)} of {jobs.length}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={goFirst}
+                disabled={currentPage === 1}
+                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+              >
+                <span className="max-[380px]:hidden">« </span>First
+              </button>
+              <button
+                onClick={goPrev}
+                disabled={currentPage === 1}
+                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+              >
+                <span className="max-[380px]:hidden">‹ </span>Prev
+              </button>
+              <form onSubmit={handlePageJump} className="flex items-center gap-1">
+                <input
+                  value={pageInput}
+                  onChange={(e) => setPageInput(e.target.value)}
+                  className="w-12 border rounded px-2 py-1 text-sm text-center"
+                  aria-label="Page number"
+                />
+                <span className="text-xs text-gray-500">/ {totalPages}</span>
+              </form>
+              <button
+                onClick={goNext}
+                disabled={currentPage === totalPages}
+                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+              >
+                Next<span className="max-[380px]:hidden"> ›</span>
+              </button>
+              <button
+                onClick={goLast}
+                disabled={currentPage === totalPages}
+                className="px-2 py-1 text-sm rounded border disabled:opacity-50"
+              >
+                Last<span className="max-[380px]:hidden"> »</span>
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

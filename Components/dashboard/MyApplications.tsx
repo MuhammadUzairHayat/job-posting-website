@@ -43,10 +43,10 @@ export default async function MyApplications() {
 
   if (applications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-        <FaBriefcase className="text-5xl mb-4 text-gray-400" />
-        <p className="text-lg font-medium">No Applications Found</p>
-        <p className="text-sm text-gray-400">
+      <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-gray-500">
+        <FaBriefcase className="text-4xl sm:text-5xl mb-3 sm:mb-4 text-gray-400" />
+        <p className="text-base sm:text-lg font-medium">No Applications Found</p>
+        <p className="text-xs sm:text-sm text-gray-400">
           You haven’t applied for any jobs yet.
         </p>
       </div>
@@ -54,8 +54,8 @@ export default async function MyApplications() {
   }
 
   return (
-    <div className="my-applications-container bg-white p-6 rounded-lg mt-6 space-y-4">
-      <h2 className="text-xl font-semibold text-gray-800 border-b pb-2">
+    <div className="my-applications-container bg-white p-4 sm:p-6 rounded-lg mt-6 space-y-4">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 border-b pb-2">
         My Applications
       </h2>
 
@@ -64,9 +64,9 @@ export default async function MyApplications() {
           <li key={app.id} className="py-4 relative">
             <div className="">
               <div className="card-top-sect flex items-center gap-2 mb-4">
-                <p className="font-medium text-gray-900">{app.job.title}</p>
+                <p className="font-medium text-gray-900 text-sm sm:text-base">{app.job.title}</p>
                 <span
-                  className={`w-[min-content] text-xs font-medium px-3 py-1 rounded-full capitalize ${
+                  className={`w-[min-content] text-[10px] sm:text-xs font-medium px-2.5 sm:px-3 py-1 rounded-full capitalize ${
                     app.status && statusColors[app.status]
                       ? statusColors[app.status]
                       : "bg-gray-100 text-gray-600"
@@ -82,8 +82,8 @@ export default async function MyApplications() {
 
             <div className="myCard-bottom-sect flex justify-between items-end">
               <div>
-                <p className="text-sm text-gray-600">{app.job.company}</p>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs sm:text-sm text-gray-600">{app.job.company}</p>
+                <p className="text-[10px] sm:text-xs text-gray-400 mt-1">
                   Applied on{" "}
                   {typeof app.appliedAt === "string"
                     ? app.appliedAt

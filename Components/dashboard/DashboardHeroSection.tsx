@@ -36,22 +36,22 @@ const DashboardHeroSection: React.FC<DashboardHeroSectionProps> = ({
   ];
 
   return (
-    <section className="mt-24 mb-[2px] px-4">
-      <div className="bg-white mx-auto max-w-6xl p-8" style={{borderTopRightRadius: "14px", borderTopLeftRadius: "14px",}}>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
-          <span className="text-blue-700">Welcome back!</span> Here&#39;s your dashboard summary.
+    <section className="mb-[2px]">
+      <div className="bg-white mx-auto max-w-7xl p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-800 mb-6">
+          <span className="text-blue-700 font-medium">Welcome back!</span> Here&#39;s your summary.
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {stats.map((item) => (
             <div
               key={item.title}
-              className={`rounded-xl p-5 flex items-center gap-4  ${item.bg}`}
+              className={`rounded-xl p-4 sm:p-5 flex items-center gap-4 ${item.bg}`}
             >
-              <div className="p-3 rounded-full bg-white border">{item.icon}</div>
+              <div className="p-2 sm:p-3 rounded-full bg-white border">{item.icon}</div>
               <div>
-                <p className="text-gray-500 text-sm">{item.title}</p>
-                <p className="text-xl font-semibold text-gray-800">{item.value}</p>
+                <p className="text-gray-500 text-xs sm:text-sm">{item.title}</p>
+                <p className="text-lg sm:text-xl font-semibold text-gray-800">{item.value}</p>
               </div>
             </div>
           ))}
