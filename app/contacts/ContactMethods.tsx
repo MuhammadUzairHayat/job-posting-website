@@ -71,11 +71,11 @@ const ContactMethods = () => {
   ];
   
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16 sm:mb-28">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16 sm:mb-28 reveal stagger-6">
       {contactMethods.map((method, index) => (
         <div
           key={index}
-          className="bg-white p-6 sm:p-8 rounded-xl border border-gray-100 hover:shadow-xs transition-all"
+          className="bg-white p-6 sm:p-8 rounded-xl border border-gray-100 hover:shadow-xs transition-all hover-lift shine-on-hover"
         >
           <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
             {method.icon}

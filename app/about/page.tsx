@@ -42,7 +42,7 @@ export default function AboutUs() {
     <section className="min-h-screen bg-neutral-50 py-24 px-6 sm:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Hero */}
-        <div className="text-center mb-28">
+        <div className="text-center mb-28 reveal">
           <span className="inline-block mb-4 px-3 py-1.5 text-xs font-medium  rounded-full bg-blue-50 text-blue-600 tracking-wider">
             WHO WE ARE
           </span>
@@ -64,8 +64,8 @@ export default function AboutUs() {
         </div>
 
         {/* Value Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32">
-          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-32 reveal stagger-6">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100 hover-lift shine-on-hover">
             <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
               {/* Icon */}
               <svg
@@ -110,7 +110,7 @@ export default function AboutUs() {
             </a>
           </div>
 
-          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100 hover-lift shine-on-hover">
             <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
               {/* Icon */}
               <svg
@@ -155,7 +155,7 @@ export default function AboutUs() {
             </a>
           </div>
 
-          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-sm transition-all hover:border-blue-100 hover-lift shine-on-hover">
             <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
               {/* Icon */}
               <svg
@@ -202,7 +202,7 @@ export default function AboutUs() {
         </div>
 
         {/* Leadership */}
-        <div className="mb-32">
+        <div className="mb-32 reveal">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
             <div>
               <h2 className="text-3xl font-light text-gray-900 mb-2">
@@ -218,11 +218,11 @@ export default function AboutUs() {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal stagger-12">
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-xs transition-all"
+                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-xs transition-all hover-lift shine-on-hover"
               >
                 <div
                   className={`h-40 bg-gradient-to-br ${member.accent} relative`}
@@ -273,11 +273,11 @@ export default function AboutUs() {
         </div>
 
         {/* Stats */}
-        <div className="mb-32">
+        <div className="mb-32 reveal">
           <h2 className="text-3xl font-light text-gray-900 mb-12 text-center">
             Making hiring happen
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 reveal stagger-12">
             {stats.map((stat, index) => (
               <div
                 key={index}

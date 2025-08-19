@@ -36,17 +36,17 @@ const DashboardHeroSection: React.FC<DashboardHeroSectionProps> = ({
   ];
 
   return (
-    <section className="mb-[2px]">
+    <section className="mb-[2px] reveal">
       <div className="bg-white mx-auto max-w-7xl p-6 sm:p-8">
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-800 mb-6">
           <span className="text-blue-700 font-medium">Welcome back!</span> Here&#39;s your summary.
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 reveal stagger-6">
           {stats.map((item) => (
             <div
               key={item.title}
-              className={`rounded-xl p-4 sm:p-5 flex items-center gap-4 ${item.bg}`}
+              className={`rounded-xl p-4 sm:p-5 flex items-center gap-4 hover-lift shine-on-hover ${item.bg}`}
             >
               <div className="p-2 sm:p-3 rounded-full bg-white border">{item.icon}</div>
               <div>

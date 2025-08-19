@@ -11,7 +11,7 @@ export default async function HomePage() {
   const jobs: JobCardProps["job"][] = await prisma.job.findMany({
     orderBy: { postedAt: 'desc' },
     include: {postedBy: true},
-    take: 4,
+    take: 6,
   });
 
 

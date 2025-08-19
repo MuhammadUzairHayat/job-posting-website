@@ -77,13 +77,19 @@ export default function JobsGrid({ location, type, post }: Props) {
 
   return (
     <>
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-8">
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 mt-8 reveal stagger-12">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
-            <JobCardSkeleton key={i} />
+            <div key={i} className="hover-lift shine-on-hover">
+              <JobCardSkeleton />
+            </div>
           ))
         ) : jobs.length > 0 ? (
-          jobs.map((job) => <JobCard key={job.id} job={job} />)
+          jobs.map((job) => (
+            <div key={job.id} className="hover-lift shine-on-hover">
+              <JobCard job={job} />
+            </div>
+          ))
         ) : (
           <div className="flex flex-col items-center justify-center col-span-full py-12 animate-fade-in">
             <svg
@@ -107,7 +113,7 @@ export default function JobsGrid({ location, type, post }: Props) {
         )}
       </div>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between reveal">
         <div className="flex items-center gap-2 text-xs">
           <span className="text-gray-500">Rows per page:</span>
           <select value={rowsPerPage} onChange={handleRowsChange} className="border rounded px-2 py-1 text-xs" aria-label="Rows per page">

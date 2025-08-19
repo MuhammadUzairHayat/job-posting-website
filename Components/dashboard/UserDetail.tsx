@@ -42,7 +42,7 @@ const UserDetail = ({ user }: { user: User }) => {
       </div>
 
       {/* Main content container */}
-      <div className="relative bg-gradient-to-br from-[#442dd7a2] via-[#372aac7e] to-[#372aacb6] mt-24 rounded-t-xl px-4 sm:px-6 py-6 sm:py-8 shadow-2xl overflow-hidden">
+      <div className="relative bg-gradient-to-br from-[#442dd7e7] via-[#372aacb9] to-[#372aacde] mt-24 rounded-t-xl px-4 sm:px-6 py-6 sm:py-8 shadow-2xl overflow-hidden">
         {/* Subtle pattern overlay */}
         <div className="absolute inset-0 opacity-50" aria-hidden="true">
           <div className="absolute top-4 left-4 w-2 h-2 bg-white/5 rounded-full" />
@@ -77,7 +77,7 @@ const UserDetail = ({ user }: { user: User }) => {
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white break-words drop-shadow-sm">
               {user.name || "Your Name"}
             </h1>
-            <p className="text-indigo-200 text-sm sm:text-base break-all sm:break-normal drop-shadow-sm">
+            <p className="text-indigo-100 text-sm sm:text-base break-all sm:break-normal drop-shadow-sm">
               {user.email}
             </p>
             
@@ -95,7 +95,6 @@ const UserDetail = ({ user }: { user: User }) => {
             )} */}
             
             {/* Decorative divider */}
-            <div className="hidden sm:block mt-2 w-16 h-0.5 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-80" />
           </div>
         </div>
         
