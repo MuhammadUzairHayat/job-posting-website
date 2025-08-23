@@ -263,43 +263,91 @@ export default function AboutUs() {
             {teamMembers.map((member, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-xs transition-all hover-lift shine-on-hover"
+                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 relative group"
               >
+                {/* Background decorative elements */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {/* Floating circles */}
+                  <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-400/10 rounded-full blur-lg"></div>
+                  <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-blue-500/15 rounded-full blur-xl"></div>
+
+                  {/* Geometric shapes */}
+                  <div className="absolute top-10 right-12 w-8 h-8 bg-blue-300/20 rounded-lg rotate-45"></div>
+                  <div className="absolute bottom-8 left-10 w-6 h-6 bg-blue-400/25 rounded-full"></div>
+
+                  {/* Animated floating particles */}
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-blue-300/30 rounded-full animate-float"
+                      style={{
+                        top: `${Math.random() * 40}%`,
+                        left: `${Math.random() * 100}%`,
+                        animationDelay: `${i * 0.7}s`,
+                        animationDuration: `${4 + i * 0.5}s`,
+                      }}
+                    ></div>
+                  ))}
+                </div>
+
                 <div
-                  className={`h-40 bg-gradient-to-br ${member.accent} relative`}
+                  className={`h-40 bg-gradient-to-br ${member.accent} relative overflow-hidden`}
                 >
+                  {/* Animated wave effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                  {/* Shimmer effect on hover */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:animate-shimmer"></div>
+                  </div>
+
                   <Image
                     src={member.pic}
                     alt="member image"
-                    className="absolute -bottom-8 object-cover left-6 w-16 h-16 rounded-xl bg-white border-4 border-white flex items-center justify-center text-2xl font-medium text-gray-900"
+                    className="absolute -bottom-8 object-cover left-6 w-16 h-16 rounded-xl bg-white border-4 border-white flex items-center justify-center text-2xl font-medium text-gray-900 shadow-lg group-hover:scale-105 transition-transform duration-300 z-10"
                   />
                 </div>
-                <div className="pt-12 pb-6 px-6">
-                  <h3 className="text-lg font-medium text-gray-900">
+
+                <div className="pt-12 pb-6 px-6 relative">
+                  {/* Subtle background pattern */}
+                  <div className="absolute inset-0 opacity-5 pointer-events-none">
+                    <div className="absolute top-4 right-4 w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <div className="absolute bottom-4 left-4 w-2 h-2 bg-blue-400 rounded-full"></div>
+                  </div>
+
+                  <h3 className="text-lg font-medium text-gray-900 relative">
                     {member.name}
+                    {/* Underline animation on hover */}
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">{member.role}</p>
+
                   <div className="mt-4 flex space-x-3">
                     <button
-                      className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+                      className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 group/icon relative overflow-hidden"
                       aria-label="Visit Facebook profile"
                       title="Visit Facebook profile"
                     >
+                      {/* Icon background effect */}
+                      <div className="absolute inset-0 bg-blue-500 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 relative z-10"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
                         <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
                       </svg>
                     </button>
+
                     <button
-                      className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
+                      className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 hover:bg-blue-100 hover:text-blue-700 transition-all duration-300 group/icon relative overflow-hidden"
                       aria-label="Visit Twitter profile"
                       title="Visit Twitter profile"
                     >
+                      {/* Icon background effect */}
+                      <div className="absolute inset-0 bg-blue-500 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
                       <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 relative z-10"
                         fill="currentColor"
                         viewBox="0 0 24 24"
                       >
@@ -308,6 +356,38 @@ export default function AboutUs() {
                     </button>
                   </div>
                 </div>
+
+                {/* Add to your global CSS */}
+                <style jsx>{`
+                  @keyframes float {
+                    0% {
+                      transform: translateY(0) rotate(0deg);
+                      opacity: 0.7;
+                    }
+                    50% {
+                      transform: translateY(-15px) rotate(5deg);
+                      opacity: 1;
+                    }
+                    100% {
+                      transform: translateY(0) rotate(0deg);
+                      opacity: 0.7;
+                    }
+                  }
+                  @keyframes shimmer {
+                    0% {
+                      transform: translateX(-100%) skewX(-15deg);
+                    }
+                    100% {
+                      transform: translateX(200%) skewX(-15deg);
+                    }
+                  }
+                  .animate-float {
+                    animation: float 4s infinite;
+                  }
+                  .animate-shimmer {
+                    animation: shimmer 2s infinite;
+                  }
+                `}</style>
               </div>
             ))}
           </div>

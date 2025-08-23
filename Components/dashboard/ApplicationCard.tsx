@@ -33,7 +33,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
     }
   };
   return (
-    <div className="bg-white rounded-2xl p-6 border hover:shadow-lg transition">
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-lg transition">
       {/* Header */}
       <header className="flex justify-between items-start mb-4">
         <div>
