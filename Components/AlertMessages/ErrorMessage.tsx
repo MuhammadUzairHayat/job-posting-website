@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 type Props = {
-  message: string;
+  message: boolean | string;
   onClose?: () => void;
 };
 

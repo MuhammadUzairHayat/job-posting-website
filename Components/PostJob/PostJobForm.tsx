@@ -10,7 +10,7 @@ import SuccessMessage from "../AlertMessages/SuccessMessage";
 export default function PostJobForm() {
   const [description, setDescription] = useState("");
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState< boolean | string | null>(false);
   const { data: session } = useSession();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

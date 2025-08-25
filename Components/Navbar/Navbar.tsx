@@ -161,6 +161,11 @@ const Navbar = () => {
           >
             <div className="px-4 pt-2 pb-4 space-y-1">
               {navItems.map((item, index) => (
+                item.session && item.label == "Sign In" ? (
+                  ""
+                ) : !item.session && item.label === "Post Job" ? (
+                  ""
+                ) :
                 <MobileNavItem
                   key={index}
                   href={item.href}
