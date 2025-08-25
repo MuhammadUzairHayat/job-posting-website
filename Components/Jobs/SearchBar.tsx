@@ -70,6 +70,7 @@ export default function SearchBar({
             <option value="Part-time">Part-time</option>
             <option value="Internship">Internship</option>
             <option value="Remote">Remote</option>
+            <option value="Contract">Contract</option>
           </select>
         </div>
 

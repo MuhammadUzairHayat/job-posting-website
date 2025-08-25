@@ -1,5 +1,5 @@
 import React from "react";
-import { Briefcase, CalendarCheck } from "lucide-react";
+import { Briefcase, CalendarCheck, Eye } from "lucide-react";
 import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
@@ -87,9 +87,9 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
             pathname: `/dashboard/application/${application.id}`,
             query: { id: application.id },
           }}
-          className="mt-2 text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
+          className="flex items-center gap-2 mt-2 text-sm font-medium bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition"
         >
-          View Application
+          <Eye className="w-4 h-4" /> View
         </Link>
       </div>
     </div>
