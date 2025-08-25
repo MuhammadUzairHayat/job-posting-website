@@ -42,14 +42,14 @@ export default function AboutUs() {
   ];
 
   const stats = [
-    { value: "50+", label: "Job postings listed", trend: "Growing daily" },
+    { value: "10+", label: "Job postings listed", trend: "Growing daily" },
     {
-      value: "120+",
+      value: "5+",
       label: "Registered job seekers",
       trend: "Actively applying",
     },
     {
-      value: "20+",
+      value: "2+",
       label: "Companies onboarded",
       trend: "Expanding network",
     },
@@ -269,11 +269,11 @@ export default function AboutUs() {
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   {/* Floating circles */}
                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-400/10 rounded-full blur-lg"></div>
-                  <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-blue-500/15 rounded-full blur-xl"></div>
+                  <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
 
                   {/* Geometric shapes */}
                   <div className="absolute top-10 right-12 w-8 h-8 bg-blue-300/20 rounded-lg rotate-45"></div>
-                  <div className="absolute bottom-8 left-10 w-6 h-6 bg-blue-400/25 rounded-full"></div>
+                  {/* <div className="absolute bottom-8 left-10 w-6 h-6 bg-blue-400/25 rounded-full"></div> */}
 
                   {/* Animated floating particles */}
                   {[1, 2, 3, 4, 5].map((i) => (
@@ -291,7 +291,7 @@ export default function AboutUs() {
                 </div>
 
                 <div
-                  className={`h-40 bg-gradient-to-br ${member.accent} relative overflow-hidden`}
+                  className={`h-40 bg-gradient-to-br ${member.accent} relative `}
                 >
                   {/* Animated wave effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -304,7 +304,7 @@ export default function AboutUs() {
                   <Image
                     src={member.pic}
                     alt="member image"
-                    className="absolute -bottom-8 object-cover left-6 w-16 h-16 rounded-xl bg-white border-4 border-white flex items-center justify-center text-2xl font-medium text-gray-900 shadow-lg group-hover:scale-105 transition-transform duration-300 z-10"
+                    className="absolute -bottom-8 object-cover left-6 w-16 h-16 rounded-xl bg-white border-4 border-white flex items-center justify-center text-2xl font-medium text-gray-900 shadow-lg group-hover:scale-105 transition-transform duration-300 z-[1000]"
                   />
                 </div>
 
@@ -318,7 +318,6 @@ export default function AboutUs() {
                   <h3 className="text-lg font-medium text-gray-900 relative">
                     {member.name}
                     {/* Underline animation on hover */}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 group-hover:w-full transition-all duration-300"></span>
                   </h3>
                   <p className="text-sm text-gray-500 mt-1">{member.role}</p>
 
@@ -329,7 +328,7 @@ export default function AboutUs() {
                       title="Visit Facebook profile"
                     >
                       {/* Icon background effect */}
-                      <div className="absolute inset-0 bg-blue-500 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
+                      <div className="absolute inset-0 cursor-pointer bg-blue-200 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
                       <svg
                         className="w-4 h-4 relative z-10"
                         fill="currentColor"
@@ -345,7 +344,7 @@ export default function AboutUs() {
                       title="Visit Twitter profile"
                     >
                       {/* Icon background effect */}
-                      <div className="absolute inset-0 bg-blue-500 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
+                      <div className="absolute inset-0 bg-blue-200 rounded-full scale-0 group-hover/icon:scale-100 transition-transform duration-300"></div>
                       <svg
                         className="w-4 h-4 relative z-10"
                         fill="currentColor"
