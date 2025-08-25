@@ -26,7 +26,7 @@ export async function POST(req: Request) {
           Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: process.env.MAIL_FROM || "Contact <onboarding@resend.dev>",
+          from: `JobBoard Website<${process.env.MAIL_FROM}>` || "Contact <onboarding@resend.dev>",
           to: process.env.MAIL_TO,
           reply_to: email,
           subject: `New Contact Form Submission: ${subject || "No subject"}`,
