@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Hero background loop animations */
+@keyframes float-slow {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes pulse-soft {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.5; }
+}
+
+.hero-float {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.hero-pulse {
+  animation: pulse-soft 6s ease-in-out infinite;
+}
+
+/* Subtle, SSR-safe reveal animations (CSS-only) */
+@keyframes fade-up {
+  0% { opacity: 0; transform: translateY(16px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.reveal > * {
+  opacity: 0;
+  animation: fade-up 0.7s ease-out forwards;
+}
+
+/* Stagger helpers (first 12 children) */
+.stagger-6 > :nth-child(1) { animation-delay: 60ms; }
+.stagger-6 > :nth-child(2) { animation-delay: 120ms; }
+.stagger-6 > :nth-child(3) { animation-delay: 180ms; }
+.stagger-6 > :nth-child(4) { animation-delay: 240ms; }
+.stagger-6 > :nth-child(5) { animation-delay: 300ms; }
+.stagger-6 > :nth-child(6) { animation-delay: 360ms; }
+
+.stagger-12 > :nth-child(1) { animation-delay: 60ms; }
+.stagger-12 > :nth-child(2) { animation-delay: 120ms; }
+.stagger-12 > :nth-child(3) { animation-delay: 180ms; }
+.stagger-12 > :nth-child(4) { animation-delay: 240ms; }
+.stagger-12 > :nth-child(5) { animation-delay: 300ms; }
+.stagger-12 > :nth-child(6) { animation-delay: 360ms; }
+.stagger-12 > :nth-child(7) { animation-delay: 420ms; }
+.stagger-12 > :nth-child(8) { animation-delay: 480ms; }
+.stagger-12 > :nth-child(9) { animation-delay: 540ms; }
+.stagger-12 > :nth-child(10) { animation-delay: 600ms; }
+.stagger-12 > :nth-child(11) { animation-delay: 660ms; }
+.stagger-12 > :nth-child(12) { animation-delay: 720ms; }
+
+/* Interactive card lift (no JS) */
+.hover-lift {
+  transition: transform 180ms ease, box-shadow 220ms ease, background-color 180ms ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+/* Subtle shine on hover for glass cards */
+.shine-on-hover {
+  position: relative;
+  overflow: hidden;
+}
+.shine-on-hover::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -150%;
+  width: 120%; height: 100%;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.15) 40%, transparent 80%);
+  transform: skewX(-15deg);
+  transition: left 600ms ease;
+}
+.shine-on-hover:hover::after {
+  left: 150%;
+}
+
+
+.ql-toolbar,
+.ql-container {
+  border: 1px solid rgb(230, 230, 230) !important;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.ql-container {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
