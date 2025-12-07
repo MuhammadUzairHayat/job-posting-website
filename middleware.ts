@@ -40,6 +40,11 @@ export async function middleware(req: NextRequest) {
 		}
 	}
 
+	// Protect profile-setup - require authentication
+	if (pathname === "/profile-setup" && !isAuthenticated) {
+		return NextResponse.redirect(new URL("/signin", req.url));
+	}
+
 	// Routes only for regular users (not admins)
 	const userOnlyRoutes = ["/jobs", "/postJob", "/dashboard", "/apply-job", "/edit-job"];
 	const isUserOnlyRoute = userOnlyRoutes.some((route) =>
