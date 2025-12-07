@@ -1,4 +1,7 @@
-import Link from "next/link"
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type DesktopNavItemProps = {
   href: string;
@@ -8,6 +11,9 @@ type DesktopNavItemProps = {
 
 // Desktop Nav Item Component
 const DesktopNavItem = ({ href, label, variant = 'default' }: DesktopNavItemProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+
   if (variant === 'primary') {
     return (
       <Link 
@@ -34,10 +40,14 @@ const DesktopNavItem = ({ href, label, variant = 'default' }: DesktopNavItemProp
     <Link 
       href={href}
       prefetch={true}
-      className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 relative group"
+      className={`px-3 py-2 text-sm font-medium transition-colors duration-200 relative group ${
+        isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"
+      }`}
     >
       {label}
-      <span className="absolute bottom-0 left-0 h-px w-0 bg-blue-600 transition-all duration-300 group-hover:w-full" />
+      <span className={`absolute bottom-0 left-0 h-px bg-blue-600 transition-all duration-300 ${
+        isActive ? "w-full" : "w-0 group-hover:w-full"
+      }`} />
     </Link>
   )
 }

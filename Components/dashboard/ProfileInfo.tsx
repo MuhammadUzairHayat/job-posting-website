@@ -3,7 +3,22 @@
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import { LogOut, Trash2, ShieldAlert, X, MapPin, Briefcase, Building2, Phone, Globe, Linkedin, Github, Users, Tag, Edit } from "lucide-react";
+import {
+  LogOut,
+  Trash2,
+  ShieldAlert,
+  X,
+  MapPin,
+  Briefcase,
+  Building2,
+  Phone,
+  Globe,
+  Linkedin,
+  Github,
+  Users,
+  Tag,
+  Edit,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
@@ -87,7 +102,7 @@ export default function ProfileInfo({ user }: Props) {
               </div>
               <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white"></div>
             </div>
-            
+
             <div className="flex-1 text-center sm:text-left">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 {user.name || "Your Name"}
@@ -106,14 +121,9 @@ export default function ProfileInfo({ user }: Props) {
                   </div>
                 )}
               </div>
-              {user.bio && (
-                <p className="bg-slate-50 p-2 rounded-lg text-gray-600 text-sm leading-relaxed max-w-2xl">
-                  {user.bio}
-                </p>
-              )}
             </div>
 
-            <Link 
+            <Link
               href="/profile-setup"
               className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 rounded-lg border border-gray-200 transition-colors text-sm font-medium"
             >
@@ -122,6 +132,39 @@ export default function ProfileInfo({ user }: Props) {
             </Link>
           </div>
         </motion.div>
+
+        {/* Bio Section */}
+        {user.bio && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <svg
+                className="w-5 h-5 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              About Me
+            </h2>
+            <div className="relative">
+              <div className="absolute -left-2 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 to-indigo-500 rounded-full"></div>
+              <p className="pl-4 text-gray-700 text-sm leading-relaxed italic">
+                &quot;{user.bio}&quot;
+              </p>
+            </div>
+          </motion.div>
+        )}
 
         {/* Info Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -139,33 +182,49 @@ export default function ProfileInfo({ user }: Props) {
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
-                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <svg
+                    className="w-4 h-4 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Email</p>
-                  <p className="text-sm font-medium text-gray-900 break-all">{user.email || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900 break-all">
+                    {user.email || "Not provided"}
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <Phone className="w-4 h-4 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Phone</p>
-                  <p className="text-sm font-medium text-gray-900">{user.phone || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.phone || "Not provided"}
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-4 h-4 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Location</p>
-                  <p className="text-sm font-medium text-gray-900">{user.location || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.location || "Not provided"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -189,30 +248,36 @@ export default function ProfileInfo({ user }: Props) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Company Name</p>
-                  <p className="text-sm font-medium text-gray-900">{user.companyName || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.companyName || "Not provided"}
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <Tag className="w-4 h-4 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Industry</p>
-                  <p className="text-sm font-medium text-gray-900">{user.industry || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.industry || "Not provided"}
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                   <Users className="w-4 h-4 text-blue-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500 mb-0.5">Company Size</p>
-                  <p className="text-sm font-medium text-gray-900">{user.companySize || "Not provided"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user.companySize || "Not provided"}
+                  </p>
                 </div>
               </div>
-              
+
               {user.companyWebsite && (
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
@@ -220,9 +285,9 @@ export default function ProfileInfo({ user }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 mb-0.5">Website</p>
-                    <a 
-                      href={user.companyWebsite} 
-                      target="_blank" 
+                    <a
+                      href={user.companyWebsite}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm font-medium text-blue-600 hover:underline break-all"
                     >
@@ -259,7 +324,7 @@ export default function ProfileInfo({ user }: Props) {
                   <span className="text-sm font-medium">LinkedIn</span>
                 </a>
               )}
-              
+
               {user.githubUrl && (
                 <a
                   href={user.githubUrl}
@@ -271,7 +336,7 @@ export default function ProfileInfo({ user }: Props) {
                   <span className="text-sm font-medium">GitHub</span>
                 </a>
               )}
-              
+
               {user.portfolioUrl && (
                 <a
                   href={user.portfolioUrl}
@@ -294,7 +359,9 @@ export default function ProfileInfo({ user }: Props) {
           transition={{ delay: 0.4 }}
           className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
         >
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Actions</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Account Actions
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <motion.button
               whileHover={{ scale: 1.02 }}
@@ -305,7 +372,7 @@ export default function ProfileInfo({ user }: Props) {
               <LogOut className="w-4 h-4" />
               Logout
             </motion.button>
-            
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -320,7 +387,7 @@ export default function ProfileInfo({ user }: Props) {
 
           {/* Error Message */}
           {error && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm flex items-start gap-2"
@@ -354,20 +421,23 @@ export default function ProfileInfo({ user }: Props) {
               >
                 <X className="w-5 h-5" />
               </button>
-              
+
               <div className="flex items-start gap-4">
                 <div className="p-2.5 rounded-xl bg-red-50 text-red-500 flex-shrink-0">
                   <ShieldAlert className="w-6 h-6" />
                 </div>
-                
+
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Delete your account?</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Delete your account?
+                  </h3>
                   <p className="text-sm text-gray-600 mt-1.5">
-                    This will permanently remove all your data. This action cannot be undone.
+                    This will permanently remove all your data. This action
+                    cannot be undone.
                   </p>
                 </div>
               </div>
-              
+
               <div className="mt-5 space-y-3">
                 <label className="block text-sm font-medium text-gray-700">
                   Type <span className="font-bold">DELETE</span> to confirm
@@ -380,7 +450,7 @@ export default function ProfileInfo({ user }: Props) {
                   className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-all"
                 />
               </div>
-              
+
               <div className="mt-6 flex justify-end gap-3">
                 <motion.button
                   whileHover={{ scale: 1.03 }}
@@ -390,7 +460,7 @@ export default function ProfileInfo({ user }: Props) {
                 >
                   Cancel
                 </motion.button>
-                
+
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
@@ -400,9 +470,25 @@ export default function ProfileInfo({ user }: Props) {
                 >
                   {deleting ? (
                     <span className="flex items-center gap-1.5">
-                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       Deleting...
                     </span>

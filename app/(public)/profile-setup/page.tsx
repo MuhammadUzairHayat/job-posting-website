@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Building2, Briefcase, Link as LinkIcon, MapPin, User, Phone, Globe } from "lucide-react";
@@ -49,6 +49,40 @@ export default function ProfileSetup() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Fetch existing profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch("/api/user/profile");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user) {
+            setFormData({
+              name: data.user.name || "",
+              phone: data.user.phone || "",
+              location: data.user.location || "",
+              jobTitle: data.user.jobTitle || "",
+              bio: data.user.bio || "",
+              companyName: data.user.companyName || "",
+              companyWebsite: data.user.companyWebsite || "",
+              companySize: data.user.companySize || "",
+              industry: data.user.industry || "",
+              linkedinUrl: data.user.linkedinUrl || "",
+              githubUrl: data.user.githubUrl || "",
+              portfolioUrl: data.user.portfolioUrl || "",
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    if (session?.user) {
+      fetchProfile();
+    }
+  }, [session]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
