@@ -6,11 +6,16 @@ export async function POST(req: Request) {
   try {
     const session = await auth();
 
+    console.log("Profile update - Session:", session);
+    console.log("Profile update - User ID:", session?.user?.id);
+
     if (!session?.user?.id) {
+      console.error("Profile update failed - No session or user ID");
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const body = await req.json();
+    console.log("Profile update - Body:", body);
 
     const updatedUser = await prisma.user.update({
       where: { id: session.user.id },
