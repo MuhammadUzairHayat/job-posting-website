@@ -56,10 +56,15 @@ export interface JobCardProps {
     salary?: number | null;
     description: string;
     postedAt: string | Date;
+    postedById: string;
+    isBlocked?: boolean;
+    blockedAt?: Date | string | null;
+    blockedReason?: string | null;
     postedBy?: {
       id?: string | null;
       name?: string | null;
       image?: string | null;
+      role?: string;
     } | null;
   };
 }

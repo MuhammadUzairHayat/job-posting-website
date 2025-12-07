@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "@/Components/Navbar/Navbar";
 import AuthSessionProvider from "@/Context/AuthSessionProvider";
+import { ChatProvider } from "@/Context/ChatContext";
+import ChatIcon from "@/Components/chat/ChatIcon";
+import ChatWindow from "@/Components/chat/ChatWindow";
 import { outfit } from "@/lib/fonts";
-import Footer from "@/Components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "Job Board",
@@ -27,11 +28,11 @@ export default function RootLayout({
       </head>
       <body className={`${outfit.className} bg-slate-50`}>
         <AuthSessionProvider>
-          <div className="bg-gray-50">
-            <Navbar />
+          <ChatProvider>
             {children}
-            <Footer />
-          </div>
+            <ChatIcon />
+            <ChatWindow />
+          </ChatProvider>
         </AuthSessionProvider>
       </body>
     </html>

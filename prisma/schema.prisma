@@ -48,12 +48,37 @@ model User {
   id            String        @id @default(cuid())
   email         String        @unique
   name          String?
+  password      String?       // For credential-based login (admins)
   emailVerified DateTime?
   image         String?
+  isBlocked     Boolean       @default(false)
+  blockedAt     DateTime?
+  blockedReason String?
+  role          String        @default("user") // "user" or "admin"
+  
+  // Profile fields
+  profileCompleted Boolean      @default(false)
+  phone            String?
+  companyName      String?
+  companyWebsite   String?
+  companySize      String?      // e.g., "1-10", "11-50", "51-200", etc.
+  industry         String?
+  jobTitle         String?      // User's current job title
+  linkedinUrl      String?
+  githubUrl        String?
+  portfolioUrl     String?
+  bio              String?      // Short bio/about
+  location         String?      // User's location
+  
   accounts      Account[]
   sessions      Session[]
   jobs          Job[] // Relation field for jobs posted by the user
   applications  Application[]
+  receivedMessages AdminMessage[] @relation("MessageRecipient")
+  
+  // Chat relationships
+  sentMessages     Message[] @relation("SentMessages")
+  receivedChatMessages Message[] @relation("ReceivedMessages")
 }
 
 model Job {
@@ -64,10 +89,15 @@ model Job {
   location     String
   type         String
   salary       Float?
+  isBlocked    Boolean       @default(false)
+  isHidden     Boolean       @default(false)
+  blockedAt    DateTime?
+  blockedReason String?
   postedAt     DateTime      @default(now())
   postedById   String
   postedBy     User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
   applications Application[]
+  adminMessages AdminMessage[]
 }
 
 model Application {
@@ -91,4 +121,34 @@ model Application {
 
   user User @relation(fields: [userId], references: [id])
   job  Job  @relation(fields: [jobId], references: [id])
+}
+
+model AdminMessage {
+  id        String   @id @default(cuid())
+  jobId     String?
+  userId    String
+  message   String
+  sentBy    String
+  isRead    Boolean  @default(false)
+  sentAt    DateTime @default(now())
+  job       Job?     @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user      User     @relation("MessageRecipient", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  text       String
+  read       Boolean  @default(false)
+  edited     Boolean  @default(false)
+  editedAt   DateTime?
+  reaction   String?  // Emoji reaction (e.g., "👍", "❤️", "😂", etc.)
+  createdAt  DateTime @default(now())
+  
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  @@index([senderId, receiverId])
+  @@index([createdAt])
 }

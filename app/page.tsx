@@ -3,6 +3,8 @@ import HomeJobSection from '@/Components/HomeSection/HomeSection';
 import HeroSection from '@/Components/HomeSection/HeroSection';
 import HomeCTASection from '@/Components/HomeSection/HomeCTASection';
 import { JobCardProps } from '@/lib/props';
+import Navbar from '@/Components/Navbar/Navbar';
+import Footer from '@/Components/Footer/Footer';
 // import { auth } from '@/lib/auth';
 
 export default async function HomePage() {
@@ -18,9 +20,11 @@ export default async function HomePage() {
   return (
     <main>
       {/* Other homepage content */}
+      <Navbar />
       <HeroSection />
       <HomeJobSection jobs={jobs} />
       <HomeCTASection />
+      <Footer />
     </main>
   );
 }

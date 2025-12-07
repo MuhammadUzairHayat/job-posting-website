@@ -3,12 +3,28 @@
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import { LogOut, Trash2, ShieldAlert, X } from "lucide-react";
-import { User } from "@/lib/props";
+import { LogOut, Trash2, ShieldAlert, X, MapPin, Briefcase, Building2, Phone, Globe, Linkedin, Github, Users, Tag, Edit } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 interface Props {
-  user: User;
+  user: {
+    id: string;
+    email: string | null;
+    name: string | null;
+    image: string | null;
+    phone: string | null;
+    location: string | null;
+    jobTitle: string | null;
+    bio: string | null;
+    companyName: string | null;
+    companyWebsite: string | null;
+    companySize: string | null;
+    industry: string | null;
+    linkedinUrl: string | null;
+    githubUrl: string | null;
+    portfolioUrl: string | null;
+  } | null;
 }
 
 export default function ProfileInfo({ user }: Props) {
@@ -41,65 +57,280 @@ export default function ProfileInfo({ user }: Props) {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="p-8 text-center text-gray-500">
+        <p>Unable to load profile information</p>
+      </div>
+    );
+  }
+
   return (
-    <section id="profile-info" className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-      {/* Profile Header */}
-      <div className="flex items-start gap-4">
-        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-md">
-          <Image
-            src={user.image || "/default-avatar.png"}
-            alt={user.name || "User"}
-            fill
-            className="object-cover"
-            sizes="80px"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/10" />
-        </div>
-        
-        <div className="min-w-0 flex-1">
-          <h2 className="text-xl font-semibold text-gray-900 truncate">
-            {user.name || "Your Name"}
-          </h2>
-          <p className="text-gray-500 text-sm break-all mt-1">{user.email}</p>
-          
-        </div>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => signOut({ callbackUrl: "/signin" })}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm"
-        >
-          <LogOut className="w-4 h-4" />
-          Logout
-        </motion.button>
-        
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={openDeleteConfirm}
-          disabled={deleting}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 disabled:opacity-70 transition-all shadow-sm"
-        >
-          <Trash2 className="w-4 h-4" />
-          {deleting ? "Deleting..." : "Delete Account"}
-        </motion.button>
-      </div>
-
-      {/* Error Message */}
-      {error && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
+    <section id="profile-info" className="p-6">
+      <div className="max-w-5xl mx-auto space-y-6">
+        {/* Header Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm flex items-start gap-2"
+          className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-8 shadow-sm border border-blue-100"
         >
-          <ShieldAlert className="w-4 h-4 mt-0.5 flex-shrink-0" />
-          <span>{error}</span>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            <div className="relative">
+              <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                <Image
+                  src={user.image || "/default-avatar.png"}
+                  alt={user.name || "User"}
+                  width={112}
+                  height={112}
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white"></div>
+            </div>
+            
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {user.name || "Your Name"}
+              </h1>
+              <div className="flex flex-wrap gap-3 justify-center sm:justify-start items-center text-gray-600 mb-3">
+                {user.jobTitle && (
+                  <div className="flex items-center gap-1.5">
+                    <Briefcase className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm font-medium">{user.jobTitle}</span>
+                  </div>
+                )}
+                {user.location && (
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm">{user.location}</span>
+                  </div>
+                )}
+              </div>
+              {user.bio && (
+                <p className="text-gray-600 text-sm leading-relaxed max-w-2xl">
+                  {user.bio}
+                </p>
+              )}
+            </div>
+
+            <Link 
+              href="/profile-setup"
+              className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 rounded-lg border border-gray-200 transition-colors text-sm font-medium"
+            >
+              <Edit className="w-4 h-4" />
+              Edit Profile
+            </Link>
+          </div>
         </motion.div>
-      )}
+
+        {/* Info Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Contact Information */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Phone className="w-5 h-5 text-blue-600" />
+              Contact Information
+            </h2>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Email</p>
+                  <p className="text-sm font-medium text-gray-900 break-all">{user.email || "Not provided"}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-4 h-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Phone</p>
+                  <p className="text-sm font-medium text-gray-900">{user.phone || "Not provided"}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-4 h-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Location</p>
+                  <p className="text-sm font-medium text-gray-900">{user.location || "Not provided"}</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Company Information */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Building2 className="w-5 h-5 text-blue-600" />
+              Company Information
+            </h2>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <Building2 className="w-4 h-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Company Name</p>
+                  <p className="text-sm font-medium text-gray-900">{user.companyName || "Not provided"}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <Tag className="w-4 h-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Industry</p>
+                  <p className="text-sm font-medium text-gray-900">{user.industry || "Not provided"}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <Users className="w-4 h-4 text-blue-600" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 mb-0.5">Company Size</p>
+                  <p className="text-sm font-medium text-gray-900">{user.companySize || "Not provided"}</p>
+                </div>
+              </div>
+              
+              {user.companyWebsite && (
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                    <Globe className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-500 mb-0.5">Website</p>
+                    <a 
+                      href={user.companyWebsite} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-sm font-medium text-blue-600 hover:underline break-all"
+                    >
+                      {user.companyWebsite}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Social Links */}
+        {(user.linkedinUrl || user.githubUrl || user.portfolioUrl) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Globe className="w-5 h-5 text-blue-600" />
+              Social Links
+            </h2>
+            <div className="flex flex-wrap gap-3">
+              {user.linkedinUrl && (
+                <a
+                  href={user.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  <span className="text-sm font-medium">LinkedIn</span>
+                </a>
+              )}
+              
+              {user.githubUrl && (
+                <a
+                  href={user.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                  <span className="text-sm font-medium">GitHub</span>
+                </a>
+              )}
+              
+              {user.portfolioUrl && (
+                <a
+                  href={user.portfolioUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg transition-colors"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span className="text-sm font-medium">Portfolio</span>
+                </a>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Account Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
+        >
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => signOut({ callbackUrl: "/signin" })}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all shadow-sm"
+            >
+              <LogOut className="w-4 h-4" />
+              Logout
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={openDeleteConfirm}
+              disabled={deleting}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 disabled:opacity-70 transition-all shadow-sm"
+            >
+              <Trash2 className="w-4 h-4" />
+              {deleting ? "Deleting..." : "Delete Account"}
+            </motion.button>
+          </div>
+
+          {/* Error Message */}
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm flex items-start gap-2"
+            >
+              <ShieldAlert className="w-4 h-4 mt-0.5 flex-shrink-0" />
+              <span>{error}</span>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
 
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
@@ -117,7 +348,7 @@ export default function ProfileInfo({ user }: Props) {
               className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl border border-gray-100 relative"
             >
               <button
-                title="Deletion"
+                title="Close"
                 onClick={() => setConfirmOpen(false)}
                 className="absolute top-4 right-4 p-1 rounded-full hover:bg-gray-100 text-gray-500"
               >

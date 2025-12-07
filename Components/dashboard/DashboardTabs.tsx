@@ -14,7 +14,23 @@ interface Props {
   jobs: Job[];
   applicationsToMyJobs: Application[] | null; // applications received on my posted jobs
   myApplications: Application[] | null; // applications I submitted to others' jobs
-  user: { name?: string | null; email?: string | null; image?: string | null };
+  user: {
+    id: string;
+    email: string | null;
+    name: string | null;
+    image: string | null;
+    phone: string | null;
+    location: string | null;
+    jobTitle: string | null;
+    bio: string | null;
+    companyName: string | null;
+    companyWebsite: string | null;
+    companySize: string | null;
+    industry: string | null;
+    linkedinUrl: string | null;
+    githubUrl: string | null;
+    portfolioUrl: string | null;
+  } | null;
 }
 
 export default function DashboardTabs({ jobs, applicationsToMyJobs, myApplications, user }: Props) {

@@ -39,6 +39,7 @@ export async function GET(req: Request) {
   const location = searchParams.get("location") || "";
   const type = searchParams.get("type") || "";
   const post = searchParams.get("post") || "";
+  const userId = searchParams.get("userId") || "";
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
   const pageSizeParam = parseInt(searchParams.get("pageSize") || "12", 10);
   const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
@@ -60,17 +61,34 @@ export async function GET(req: Request) {
     ];
   }
 
-  const total = await prisma.job.count({ where });
-
-  const jobs: JobCardProps["job"][] = await prisma.job.findMany({
+  // Filter out blocked jobs (except for the job owner)
+  // Also filter jobs blocked more than 24 hours ago for everyone
+  const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+  
+  const allJobs: JobCardProps["job"][] = await prisma.job.findMany({
     where,
     orderBy: { postedAt: "desc" },
     include: {
       postedBy: true,
     },
-    skip: (page - 1) * pageSize,
-    take: pageSize,
   });
 
-  return NextResponse.json({ jobs, total, page, pageSize });
+  // Filter jobs based on blocked status and ownership
+  const filteredJobs = allJobs.filter(job => {
+    // If not blocked, show to everyone
+    if (!job.isBlocked) return true;
+    
+    // If blocked more than 24 hours ago, hide from everyone
+    if (job.blockedAt && new Date(job.blockedAt) < twentyFourHoursAgo) {
+      return false;
+    }
+    
+    // If blocked within 24 hours, only show to the owner
+    return job.postedById === userId;
+  });
+
+  const total = filteredJobs.length;
+  const paginatedJobs = filteredJobs.slice((page - 1) * pageSize, page * pageSize);
+
+  return NextResponse.json({ jobs: paginatedJobs, total, page, pageSize });
 }

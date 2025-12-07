@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import JobCard from "@/Components/Jobs/JobCard";
 import JobCardSkeleton from "./JobCardSkeleton";
+import { useSession } from "next-auth/react";
 
 type Job = {
   id: string;
@@ -13,9 +14,14 @@ type Job = {
   type: string;
   description: string;
   postedAt: string | Date;
+  isBlocked?: boolean;
+  blockedAt?: Date | string | null;
+  blockedReason?: string | null;
+  postedById: string;
   postedBy?: {
     name?: string | null;
     image?: string | null;
+    role?: string;
   } | null;
 };
 
@@ -26,6 +32,7 @@ interface Props {
 }
 
 export default function JobsGrid({ location, type, post }: Props) {
+  const { data: session } = useSession();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +51,7 @@ export default function JobsGrid({ location, type, post }: Props) {
       post,
       page: String(currentPage),
       pageSize: String(rowsPerPage),
+      userId: session?.user?.id || "",
     });
     fetch(`/api/jobs?${params.toString()}`, { cache: "no-store" })
       .then((r) => r.json())
@@ -52,7 +60,7 @@ export default function JobsGrid({ location, type, post }: Props) {
         setTotal(data.total || 0);
       })
       .finally(() => setIsLoading(false));
-  }, [location, type, post, currentPage, rowsPerPage]);
+  }, [location, type, post, currentPage, rowsPerPage, session?.user?.id]);
 
   const showingFrom = useMemo(() => (currentPage - 1) * rowsPerPage + 1, [currentPage, rowsPerPage]);
   const showingTo = useMemo(() => Math.min(currentPage * rowsPerPage, total), [currentPage, rowsPerPage, total]);

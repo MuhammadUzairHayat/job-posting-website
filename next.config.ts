@@ -5,7 +5,7 @@ import { Configuration } from 'webpack';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com', "media.istockphoto.com"],
+    domains: ['avatars.githubusercontent.com', 'lh3.googleusercontent.com', "media.istockphoto.com", "ui-avatars.com"],
   },
   webpack: (config: Configuration) => {
     config.resolve = {
