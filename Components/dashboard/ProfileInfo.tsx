@@ -107,7 +107,7 @@ export default function ProfileInfo({ user }: Props) {
                 )}
               </div>
               {user.bio && (
-                <p className="text-gray-600 text-sm leading-relaxed max-w-2xl">
+                <p className="bg-slate-50 p-2 rounded-lg text-gray-600 text-sm leading-relaxed max-w-2xl">
                   {user.bio}
                 </p>
               )}
