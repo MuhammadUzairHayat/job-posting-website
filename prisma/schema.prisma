@@ -81,6 +81,14 @@ model User {
   // Chat relationships
   sentMessages     Message[] @relation("SentMessages")
   receivedChatMessages Message[] @relation("ReceivedMessages")
+  
+  // Indexes for admin panel filtering and search
+  @@index([isBlocked])
+  @@index([emailVerified])
+  @@index([role])
+  @@index([name])
+  @@index([jobTitle])
+  @@index([location])
 }
 
 model Job {
@@ -100,6 +108,16 @@ model Job {
   postedBy     User          @relation(fields: [postedById], references: [id], onDelete: Cascade)
   applications Application[]
   adminMessages AdminMessage[]
+  
+  // Indexes for admin panel filtering and search
+  @@index([isBlocked])
+  @@index([isHidden])
+  @@index([postedAt])
+  @@index([title])
+  @@index([company])
+  @@index([location])
+  @@index([type])
+  @@index([postedById])
 }
 
 model Application {

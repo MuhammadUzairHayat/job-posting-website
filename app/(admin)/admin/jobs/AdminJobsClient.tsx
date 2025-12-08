@@ -79,17 +79,22 @@ export default function AdminJobsClient({ initialJobs }: AdminJobsClientProps) {
   };
 
   const handleHide = async (jobId: string) => {
+    const job = jobs.find(j => j.id === jobId);
+    if (!job) return;
+
     setLoading(jobId);
     try {
       const response = await fetch(`/api/admin/jobs/${jobId}/hide`, {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isHidden: !job.isHidden }),
       });
 
       if (response.ok) {
         const data = await response.json();
         setJobs(
-          jobs.map((job) =>
-            job.id === jobId ? { ...job, isHidden: data.job.isHidden } : job
+          jobs.map((j) =>
+            j.id === jobId ? { ...j, isHidden: data.job.isHidden } : j
           )
         );
         alert(data.message);
@@ -171,30 +176,29 @@ export default function AdminJobsClient({ initialJobs }: AdminJobsClientProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Job Details
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Posted By
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Applications
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {jobs.map((job) => (
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b border-gray-200">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Job Details
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Posted By
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Applications
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {jobs.map((job) => (
                 <tr key={job.id} className={job.isBlocked ? "bg-red-50" : ""}>
                   <td className="px-6 py-4">
                     <div>
@@ -280,10 +284,9 @@ export default function AdminJobsClient({ initialJobs }: AdminJobsClientProps) {
                     </div>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Message Modal */}

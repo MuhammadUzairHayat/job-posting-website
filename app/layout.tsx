@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AuthSessionProvider from "@/Context/AuthSessionProvider";
-import { ChatProvider } from "@/Context/ChatContext";
-import ChatIcon from "@/Components/chat/ChatIcon";
-import ChatWindow from "@/Components/chat/ChatWindow";
 import { outfit } from "@/lib/fonts";
 
 export const metadata: Metadata = {
@@ -28,11 +25,7 @@ export default function RootLayout({
       </head>
       <body className={`${outfit.className} bg-slate-50`}>
         <AuthSessionProvider>
-          <ChatProvider>
-            {children}
-            <ChatIcon />
-            <ChatWindow />
-          </ChatProvider>
+          {children}
         </AuthSessionProvider>
       </body>
     </html>

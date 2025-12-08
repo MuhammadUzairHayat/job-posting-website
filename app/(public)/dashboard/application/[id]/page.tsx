@@ -1,10 +1,7 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/lib/auth";
-import { ovo } from "@/lib/fonts";
-import { statusColors } from "@/Components/dashboard/ApplicationCard";
 import ApplicationDetailClient from "./ApplicationDetailClient";
 
 export default async function ApplicationDetailPage({

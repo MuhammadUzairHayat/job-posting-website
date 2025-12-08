@@ -1,38 +1,118 @@
 import { prisma } from "@/lib/prisma";
 import AdminUsersClient from "./AdminUsersClient";
 import AdminDashboardLayout from "@/Components/admin/AdminDashboardLayout";
+import AdminFilters from "@/Components/admin/AdminFilters";
+import Pagination from "@/Components/admin/Pagination";
+import RoleFilterSelect from "./RoleFilterSelect";
 
-async function getAllUsers() {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      image: true,
-      jobTitle: true,
-      location: true,
-      emailVerified: true,
-      isBlocked: true,
-      blockedAt: true,
-      blockedReason: true,
-      role: true,
-      _count: {
-        select: {
-          jobs: true,
-          applications: true,
-        },
-      },
-    },
-    orderBy: {
-      emailVerified: "desc",
-    },
-  });
+const ITEMS_PER_PAGE = 12;
 
-  return users;
+interface SearchParams {
+  page?: string;
+  search?: string;
+  status?: string;
+  role?: string;
 }
 
-export default async function AdminUsersPage() {
-  const users = await getAllUsers();
+async function getUsers(searchParams: SearchParams) {
+  const page = parseInt(searchParams.page || "1");
+  const skip = (page - 1) * ITEMS_PER_PAGE;
+  
+  // Build where clause based on filters
+  type WhereClause = {
+    OR?: Array<{
+      name?: { contains: string; mode: "insensitive" };
+      email?: { contains: string; mode: "insensitive" };
+      jobTitle?: { contains: string; mode: "insensitive" };
+      location?: { contains: string; mode: "insensitive" };
+    }>;
+    isBlocked?: boolean;
+    emailVerified?: { not: null } | null;
+    role?: string;
+  };
+
+  const where: WhereClause = {};
+  
+  if (searchParams.search) {
+    where.OR = [
+      { name: { contains: searchParams.search, mode: "insensitive" } },
+      { email: { contains: searchParams.search, mode: "insensitive" } },
+      { jobTitle: { contains: searchParams.search, mode: "insensitive" } },
+      { location: { contains: searchParams.search, mode: "insensitive" } },
+    ];
+  }
+  
+  if (searchParams.status === "blocked") {
+    where.isBlocked = true;
+  } else if (searchParams.status === "active") {
+    where.isBlocked = false;
+  } else if (searchParams.status === "verified") {
+    where.emailVerified = { not: null };
+  } else if (searchParams.status === "unverified") {
+    where.emailVerified = null;
+  }
+  
+  if (searchParams.role) {
+    where.role = searchParams.role;
+  }
+
+  const [users, totalCount] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        image: true,
+        jobTitle: true,
+        location: true,
+        emailVerified: true,
+        isBlocked: true,
+        blockedAt: true,
+        blockedReason: true,
+        role: true,
+        _count: {
+          select: {
+            jobs: true,
+            applications: true,
+          },
+        },
+      },
+      orderBy: {
+        emailVerified: "desc",
+      },
+      take: ITEMS_PER_PAGE,
+      skip,
+    }),
+    prisma.user.count({ where }),
+  ]);
+
+  return {
+    users,
+    totalCount,
+    currentPage: page,
+    totalPages: Math.ceil(totalCount / ITEMS_PER_PAGE),
+  };
+}
+
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
+  const { users, totalCount, currentPage, totalPages } = await getUsers(params);
+
+  const [activeCount, blockedCount] = await Promise.all([
+    prisma.user.count({ where: { isBlocked: false } }),
+    prisma.user.count({ where: { isBlocked: true } }),
+  ]);
+
+  const stats = {
+    total: totalCount,
+    active: activeCount,
+    blocked: blockedCount,
+  };
 
   return (
     <AdminDashboardLayout>
@@ -49,7 +129,7 @@ export default async function AdminUsersPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Users</p>
-              <p className="text-3xl font-bold text-gray-900">{users.length}</p>
+              <p className="text-3xl font-bold text-gray-900">{stats.total}</p>
             </div>
             <div className="p-3 bg-blue-100 rounded-lg">
               <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
@@ -62,7 +142,7 @@ export default async function AdminUsersPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Active Users</p>
-              <p className="text-3xl font-bold text-green-600">{users.filter((u) => !u.isBlocked).length}</p>
+              <p className="text-3xl font-bold text-green-600">{stats.active}</p>
             </div>
             <div className="p-3 bg-green-100 rounded-lg">
               <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -75,7 +155,7 @@ export default async function AdminUsersPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Blocked Users</p>
-              <p className="text-3xl font-bold text-red-600">{users.filter((u) => u.isBlocked).length}</p>
+              <p className="text-3xl font-bold text-red-600">{stats.blocked}</p>
             </div>
             <div className="p-3 bg-red-100 rounded-lg">
               <svg className="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 20 20">
@@ -86,12 +166,34 @@ export default async function AdminUsersPage() {
         </div>
       </div>
 
+      {/* Filters */}
+      <AdminFilters
+        searchPlaceholder="Search by name, email, job title, or location..."
+        statusOptions={[
+          { label: "Active Users", value: "active" },
+          { label: "Blocked Users", value: "blocked" },
+          { label: "Email Verified", value: "verified" },
+          { label: "Email Unverified", value: "unverified" },
+        ]}
+        additionalFilters={
+          <RoleFilterSelect currentRole={params.role || ""} />
+        }
+      />
+
       {users.length === 0 ? (
         <div className="bg-white rounded-lg shadow p-12 text-center">
-          <p className="text-gray-600">No users found</p>
+          <p className="text-gray-600">No users found matching your filters</p>
         </div>
       ) : (
-        <AdminUsersClient initialUsers={users} />
+        <>
+          <AdminUsersClient initialUsers={users} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalCount}
+            itemsPerPage={ITEMS_PER_PAGE}
+          />
+        </>
       )}
     </div>
     </AdminDashboardLayout>
