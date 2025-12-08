@@ -86,18 +86,38 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.profileCompleted = session.user.profileCompleted ?? token.profileCompleted;
       }
 
+      // Refresh user data from database to get latest blocked status
+      if (token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { isBlocked: true, profileCompleted: true, role: true },
+        });
+
+        if (dbUser) {
+          token.isBlocked = dbUser.isBlocked;
+          token.profileCompleted = dbUser.profileCompleted;
+          token.role = dbUser.role;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
       // console.log("🔐 session callback", { session, token });
       if (session.user) {
+        // Check database for latest blocked status
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { isBlocked: true, profileCompleted: true, role: true },
+        });
+
         session.user.id = token.id ?? "";
         session.user.name = token.name ?? null;
         session.user.email = token.email ?? "";
         session.user.image = token.picture ?? null;
-        session.user.role = token.role ?? "user";
-        session.user.isBlocked = token.isBlocked ?? false;
-        session.user.profileCompleted = token.profileCompleted ?? false;
+        session.user.role = dbUser?.role ?? token.role ?? "user";
+        session.user.isBlocked = dbUser?.isBlocked ?? token.isBlocked ?? false;
+        session.user.profileCompleted = dbUser?.profileCompleted ?? token.profileCompleted ?? false;
       }
       return session;
     },

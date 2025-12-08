@@ -1,12 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { FaBan, FaEye, FaInfoCircle } from "react-icons/fa";
 
 interface User {
   id: string;
   email: string;
   name: string | null;
+  image: string | null;
+  jobTitle: string | null;
+  location: string | null;
   emailVerified: Date | null;
   isBlocked: boolean;
   blockedAt: Date | null;
@@ -119,103 +123,148 @@ export default function AdminUsersClient({
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Jobs Posted
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Applications
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id} className={user.isBlocked ? "bg-red-50" : ""}>
-                  <td className="px-6 py-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {user.name || "N/A"}
-                      </p>
-                      <p className="text-sm text-gray-600">{user.email}</p>
-                      {user.blockedReason && (
-                        <button
-                          onClick={() => handleShowReason(user.blockedReason!)}
-                          className="mt-1 text-xs text-red-600 hover:text-red-800 underline flex items-center gap-1"
-                        >
-                          <FaInfoCircle className="w-3 h-3" />
-                          View Reason
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.role === "admin"
-                          ? "bg-purple-100 text-purple-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
-                    {user._count.jobs}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900">
+      {/* Modern Card Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className={`bg-white rounded-2xl shadow-lg border-2 transition-all hover:shadow-xl ${
+              user.isBlocked
+                ? "border-red-200 bg-red-50/50"
+                : "border-gray-100 hover:border-indigo-200"
+            }`}
+          >
+            {/* Card Header with Avatar */}
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-start gap-4">
+                <div className="relative flex-shrink-0">
+                  <Image
+                    src={
+                      user.image ||
+                      `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                        user.name || user.email
+                      )}&size=80&background=4F46E5&color=fff&bold=true`
+                    }
+                    alt={user.name || "User"}
+                    width={64}
+                    height={64}
+                    className="rounded-full border-4 border-white shadow-md"
+                  />
+                  {/* Status Indicator */}
+                  <div
+                    className={`absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white ${
+                      user.isBlocked ? "bg-red-500" : "bg-green-400"
+                    }`}
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-lg font-bold text-gray-900 truncate">
+                    {user.name || "Anonymous"}
+                  </h3>
+                  <p className="text-sm text-gray-600 truncate">{user.email}</p>
+                  {user.jobTitle && (
+                    <p className="text-xs text-indigo-600 mt-1 truncate">
+                      {user.jobTitle}
+                    </p>
+                  )}
+                  {user.location && (
+                    <p className="text-xs text-gray-500 mt-0.5 flex items-center gap-1">
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      {user.location}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Card Body with Stats */}
+            <div className="p-6 space-y-4">
+              {/* Role Badge */}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-gray-600">Role</span>
+                <span
+                  className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                    user.role === "admin"
+                      ? "bg-purple-100 text-purple-800"
+                      : "bg-gray-100 text-gray-800"
+                  }`}
+                >
+                  {user.role}
+                </span>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
+                  <p className="text-xs text-blue-600 font-medium mb-1">Jobs Posted</p>
+                  <p className="text-2xl font-bold text-blue-700">{user._count.jobs}</p>
+                </div>
+                <div className="bg-green-50 rounded-lg p-3 border border-green-100">
+                  <p className="text-xs text-green-600 font-medium mb-1">Applications</p>
+                  <p className="text-2xl font-bold text-green-700">
                     {user._count.applications}
-                  </td>
-                  <td className="px-6 py-4">
-                    {user.isBlocked ? (
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                        Blocked
-                      </span>
-                    ) : (
-                      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleBlock(user.id, user.isBlocked)}
-                        disabled={loading === user.id || user.role === "admin"}
-                        className="p-2 text-white bg-red-600 hover:bg-red-700 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
-                        title={user.isBlocked ? "Unblock" : "Block"}
-                      >
-                        <FaBan />
-                      </button>
-                      <button
-                        onClick={() => handleViewDetails(user.id)}
-                        className="p-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md transition"
-                        title="View Details"
-                      >
-                        <FaEye />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  </p>
+                </div>
+              </div>
+
+              {/* Status */}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <span className="text-xs font-medium text-gray-600">Status</span>
+                {user.isBlocked ? (
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                    Blocked
+                  </span>
+                ) : (
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Active
+                  </span>
+                )}
+              </div>
+
+              {/* Block Reason */}
+              {user.blockedReason && (
+                <button
+                  onClick={() => handleShowReason(user.blockedReason!)}
+                  className="w-full text-xs text-red-600 hover:text-red-800 underline flex items-center justify-center gap-1 py-2 bg-red-50 rounded-lg border border-red-100"
+                >
+                  <FaInfoCircle className="w-3 h-3" />
+                  View Block Reason
+                </button>
+              )}
+            </div>
+
+            {/* Card Footer with Actions */}
+            <div className="p-4 bg-gray-50 border-t border-gray-100 flex gap-2">
+              <button
+                onClick={() => handleViewDetails(user.id)}
+                className="flex-1 px-4 py-2.5 text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                title="View Details"
+              >
+                <FaEye />
+                <span className="text-sm">Details</span>
+              </button>
+              <button
+                onClick={() => handleBlock(user.id, user.isBlocked)}
+                disabled={loading === user.id || user.role === "admin"}
+                className={`flex-1 px-4 py-2.5 text-white rounded-xl font-semibold shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                  user.isBlocked
+                    ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                    : "bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700"
+                }`}
+                title={user.isBlocked ? "Unblock" : "Block"}
+              >
+                <FaBan />
+                <span className="text-sm">{user.isBlocked ? "Unblock" : "Block"}</span>
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* User Details Modal */}

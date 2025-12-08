@@ -13,20 +13,30 @@ export default async function EditApplicationPage({ params }: { params: Promise<
   if (!application || application.userId !== userId) return notFound();
 
   return (
-    <div className="max-w-3xl mx-auto my-24 px-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-        <h1 className="text-2xl font-semibold mb-6">Edit Application</h1>
-        <ApplicationEditForm
-          applicationId={application.id}
-          initial={{
-            coverLetter: application.coverLetter,
-            phoneNumber: application.phoneNumber,
-            linkedin: application.linkedin,
-            github: application.github,
-            portfolio: application.portfolio,
-            resumeUrl: application.resumeUrl,
-          }}
-        />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto mt-16">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-6 sm:px-8 py-6">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">Edit Application</h1>
+            <p className="text-blue-100 mt-1">Update your application details</p>
+          </div>
+
+          {/* Form Content */}
+          <div className="p-6 sm:p-8">
+            <ApplicationEditForm
+              applicationId={application.id}
+              initial={{
+                coverLetter: application.coverLetter,
+                phoneNumber: application.phoneNumber,
+                linkedin: application.linkedin,
+                github: application.github,
+                portfolio: application.portfolio,
+                resumeUrl: application.resumeUrl,
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

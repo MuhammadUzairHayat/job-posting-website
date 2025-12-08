@@ -24,20 +24,27 @@ export async function middleware(req: NextRequest) {
 	const pathname = req.nextUrl.pathname;
 
 	// Check if authenticated user is blocked
-	if (isAuthenticated && !isAdmin) {
-		// If user is blocked, redirect to signin and clear session
+	if (isAuthenticated && !isAdmin && pathname !== "/blocked") {
+		// If user is blocked, redirect to blocked page
 		if (isBlocked) {
-			const response = NextResponse.redirect(new URL("/signin?blocked=true", req.url));
-			// Clear the session cookie
-			response.cookies.delete("next-auth.session-token");
-			response.cookies.delete("__Secure-next-auth.session-token");
-			return response;
+			return NextResponse.redirect(new URL("/blocked", req.url));
 		}
 
 		// If profile not completed and not on profile-setup page, redirect there
 		if (!profileCompleted && pathname !== "/profile-setup") {
 			return NextResponse.redirect(new URL("/profile-setup", req.url));
 		}
+	}
+
+	// Allow access to blocked page only for blocked users
+	if (pathname === "/blocked") {
+		if (!isAuthenticated) {
+			return NextResponse.redirect(new URL("/signin", req.url));
+		}
+		if (!isBlocked) {
+			return NextResponse.redirect(new URL("/", req.url));
+		}
+		return NextResponse.next();
 	}
 
 	// Protect profile-setup - require authentication
@@ -100,6 +107,7 @@ export const config = {
 		"/edit-job/:path*",
 		"/signin",
 		"/admin/:path*",
-		"/profile-setup"
+		"/profile-setup",
+		"/blocked"
 	],
 };
