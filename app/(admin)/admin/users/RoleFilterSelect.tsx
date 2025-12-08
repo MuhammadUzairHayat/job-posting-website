@@ -22,7 +22,7 @@ export default function RoleFilterSelect({ currentRole }: RoleFilterSelectProps)
     // Reset to page 1 when filter changes
     params.set("page", "1");
     
-    router.push(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   return (

@@ -45,10 +45,11 @@ export default function AdminFilters({
     // Reset to page 1 when filters change
     params.set("page", "1");
     
-    router.push(`?${params.toString()}`);
+    // Use replace to prevent scroll jump and avoid adding to history
+    router.replace(`?${params.toString()}`, { scroll: false });
   }, [search, status, dateFrom, dateTo, searchParams, router]);
 
-  // Debounced search
+  // Debounced search - only for search input
   useEffect(() => {
     const timer = setTimeout(() => {
       applyFilters();
@@ -57,12 +58,19 @@ export default function AdminFilters({
     return () => clearTimeout(timer);
   }, [search, applyFilters]);
 
+  // Immediate filter application for non-search filters
+  useEffect(() => {
+    if (status || dateFrom || dateTo) {
+      applyFilters();
+    }
+  }, [status, dateFrom, dateTo, applyFilters]);
+
   const clearFilters = () => {
     setSearch("");
     setStatus("");
     setDateFrom("");
     setDateTo("");
-    router.push(window.location.pathname);
+    router.replace(window.location.pathname, { scroll: false });
   };
 
   const hasActiveFilters = search || status || dateFrom || dateTo;
@@ -120,10 +128,7 @@ export default function AdminFilters({
               <select
                 title="status filter"
                 value={status}
-                onChange={(e) => {
-                  setStatus(e.target.value);
-                  setTimeout(applyFilters, 100);
-                }}
+                onChange={(e) => setStatus(e.target.value)}
                 className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm"
               >
                 <option value="">All Status</option>
@@ -146,10 +151,7 @@ export default function AdminFilters({
                   title="date"
                   type="date"
                   value={dateFrom}
-                  onChange={(e) => {
-                    setDateFrom(e.target.value);
-                    setTimeout(applyFilters, 100);
-                  }}
+                  onChange={(e) => setDateFrom(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm"
                 />
               </div>
@@ -162,10 +164,7 @@ export default function AdminFilters({
                   title="to date"
                   type="date"
                   value={dateTo}
-                  onChange={(e) => {
-                    setDateTo(e.target.value);
-                    setTimeout(applyFilters, 100);
-                  }}
+                  onChange={(e) => setDateTo(e.target.value)}
                   className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm"
                 />
               </div>

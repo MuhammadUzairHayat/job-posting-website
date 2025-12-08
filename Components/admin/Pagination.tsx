@@ -17,7 +17,7 @@ export default function Pagination({ currentPage, totalPages, totalItems, itemsP
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
-    router.push(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   const startItem = (currentPage - 1) * itemsPerPage + 1;
