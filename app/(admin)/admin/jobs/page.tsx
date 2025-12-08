@@ -69,6 +69,7 @@ async function getJobs(searchParams: SearchParams) {
         blockedReason: true,
         postedBy: {
           select: {
+            id: true,
             name: true,
             email: true,
           },

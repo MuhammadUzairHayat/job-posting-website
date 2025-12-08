@@ -137,7 +137,7 @@ export default function AdminJobsClient({ initialJobs }: AdminJobsClientProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           jobId: selectedJob.id,
-          userId: selectedJob.postedBy,
+          userId: selectedJob.postedBy.id,
           message: message.trim(),
         }),
       });

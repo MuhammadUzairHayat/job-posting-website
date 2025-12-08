@@ -4,6 +4,7 @@ import DashboardHeroSection from "@/Components/dashboard/DashboardHeroSection";
 import { ApplicationCardProps, JobCardProps } from "@/lib/props";
 import DashboardTabs from "@/Components/dashboard/DashboardTabs";
 import UserDetail from "@/Components/dashboard/UserDetail";
+import AdminMessages from "@/Components/dashboard/AdminMessages";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -83,6 +84,11 @@ export default async function DashboardPage() {
         totalReceivedApplications={jobsApplications.length}
         totalAppliedJobs={myApplications.length}
       />
+
+      {/* Admin Messages Section */}
+      <div className="my-6">
+        <AdminMessages />
+      </div>
 
       <DashboardTabs
         jobs={myJobs}

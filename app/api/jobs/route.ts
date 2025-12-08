@@ -61,7 +61,7 @@ export async function GET(req: Request) {
     ];
   }
 
-  // Filter out blocked jobs (except for the job owner)
+  // Filter out blocked and hidden jobs (except for the job owner)
   // Also filter jobs blocked more than 24 hours ago for everyone
   const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
   
@@ -73,9 +73,14 @@ export async function GET(req: Request) {
     },
   });
 
-  // Filter jobs based on blocked status and ownership
+  // Filter jobs based on blocked/hidden status and ownership
   const filteredJobs = allJobs.filter(job => {
-    // If not blocked, show to everyone
+    // Hide hidden jobs from everyone except the owner
+    if (job.isHidden && job.postedById !== userId) {
+      return false;
+    }
+    
+    // If not blocked, show to everyone (or owner if hidden)
     if (!job.isBlocked) return true;
     
     // If blocked more than 24 hours ago, hide from everyone

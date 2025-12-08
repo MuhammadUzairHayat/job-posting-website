@@ -19,6 +19,7 @@ export interface Job {
   isHidden: boolean;
   blockedReason?: string | null;
   postedBy: {
+    id: string;
     name: string | null;
     email: string;
   };
