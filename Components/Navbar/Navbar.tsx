@@ -27,19 +27,29 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { href: "/", label: "Home", session: true },
-    { href: "/about", label: "About", session: true },
-    { href: "/dashboard", label: "Dashboard", session: true },
-    { href: "/jobs", label: "Jobs", session: true },
-    { href: "/contacts", label: "contacts", session: true },
+    { href: "/", label: "Home", requireAuth: false },
+    { href: "/about", label: "About", requireAuth: false },
+    { href: "/dashboard", label: "Dashboard", requireAuth: true },
+    { href: "/jobs", label: "Jobs", requireAuth: true },
+    { href: "/contacts", label: "Contacts", requireAuth: false },
     {
       href: "/signin",
       label: "Sign In",
       variant: "outline",
-      session: session?.user,
+      showWhenSignedIn: false,
     },
-    { href: "/postJob", label: "Post Job", variant: "primary", session: session?.user },
+    { href: "/postJob", label: "Post Job", variant: "primary", requireAuth: true },
   ];
+
+  const filteredNavItems = navItems.filter(item => {
+    if ('showWhenSignedIn' in item) {
+      return !session?.user;
+    }
+    if ('requireAuth' in item && item.requireAuth) {
+      return !!session?.user;
+    }
+    return true;
+  });
 
   return (
     <header
@@ -88,26 +98,20 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="flex items-center justify-center gap-2">
             <nav className="hidden md:flex items-center space-x-2">
-              {navItems.map((item, index) =>
-                item.session && item.label == "Sign In" ? (
-                  ""
-                ) : !item.session && item.label === "Post Job" ? (
-                  ""
-                ) : (
-                  <DesktopNavItem
-                    key={index}
-                    href={item.href}
-                    label={item.label}
-                    variant={
-                      item.variant as
-                        | "primary"
-                        | "outline"
-                        | "default"
-                        | undefined
-                    }
-                  />
-                )
-              )}
+              {filteredNavItems.map((item, index) => (
+                <DesktopNavItem
+                  key={index}
+                  href={item.href}
+                  label={item.label}
+                  variant={
+                    item.variant as
+                      | "primary"
+                      | "outline"
+                      | "default"
+                      | undefined
+                  }
+                />
+              ))}
             </nav>
             <UserAvatar user={session?.user} />
 
@@ -160,12 +164,7 @@ const Navbar = () => {
             className="md:hidden overflow-hidden bg-white/95 backdrop-blur-sm shadow-lg"
           >
             <div className="px-4 pt-2 pb-4 space-y-1">
-              {navItems.map((item, index) => (
-                item.session && item.label == "Sign In" ? (
-                  ""
-                ) : !item.session && item.label === "Post Job" ? (
-                  ""
-                ) :
+              {filteredNavItems.map((item, index) => (
                 <MobileNavItem
                   key={index}
                   href={item.href}

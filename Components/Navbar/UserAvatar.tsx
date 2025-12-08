@@ -14,6 +14,20 @@ export function UserAvatar({
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Get initials from name
+  const getInitials = (name: string | null | undefined): string => {
+    if (!name) return "";
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return parts[0][0].toUpperCase();
+  };
+
+  const initials = getInitials(user?.name);
+
+  if (!user) return null;
+
   return (
     <div className="relative ml-2">
       <button
@@ -30,39 +44,37 @@ export function UserAvatar({
             className="rounded-full"
           />
         ) : (
-          <FaUserCircle className="w-10 h-10 text-gray-400" />
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-semibold text-sm">
+            {initials || <FaUserCircle className="w-6 h-6" />}
+          </div>
         )}
       </button>
 
       {isOpen && (
         <div className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-xl ring-1 ring-blue-200 ring-opacity-5 animate-fade-in">
-          {user ? (
-            <div className="py-2">
-              <div className="px-4 py-2 border-b border-gray-200">
-                <p className="text-sm font-semibold text-gray-900 truncate">
-                  {user.name}
-                </p>
-                <p className="text-sm text-gray-500 truncate">{user.email}</p>
-              </div>
-
-              <Link
-                href={"/dashboard#profile-info"}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
-              >
-                <User size={16} className="mr-2 duration-100" />
-                Profile
-              </Link>
-              <button
-                onClick={() => signOut({ callbackUrl: "/signin" })}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
-              >
-                <FaSignOutAlt className="mr-2 duration-100" />
-                Sign out
-              </button>
+          <div className="py-2">
+            <div className="px-4 py-2 border-b border-gray-200">
+              <p className="text-sm font-semibold text-gray-900 truncate">
+                {user.name}
+              </p>
+              <p className="text-sm text-gray-500 truncate">{user.email}</p>
             </div>
-          ) : (
-            <div className="px-4 py-3 text-sm text-gray-500">Not signed in</div>
-          )}
+
+            <Link
+              href={"/dashboard#profile-info"}
+              className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
+            >
+              <User size={16} className="mr-2 duration-100" />
+              Profile
+            </Link>
+            <button
+              onClick={() => signOut({ callbackUrl: "/signin" })}
+              className="flex items-center w-full px-4 py-2 text-sm text-gray-700 transition-all duration-200 hover:text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-indigo-700"
+            >
+              <FaSignOutAlt className="mr-2 duration-100" />
+              Sign out
+            </button>
+          </div>
         </div>
       )}
     </div>
