@@ -3,11 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
 import { useState, useEffect, useCallback } from "react";
-
-interface FilterOption {
-  label: string;
-  value: string;
-}
+import type { FilterOption } from "@/types/admin";
 
 interface AdminFiltersProps {
   searchPlaceholder?: string;

@@ -1,46 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaBan, FaEye, FaInfoCircle } from "react-icons/fa";
-
-interface User {
-  id: string;
-  email: string;
-  name: string | null;
-  image: string | null;
-  jobTitle: string | null;
-  location: string | null;
-  emailVerified: Date | null;
-  isBlocked: boolean;
-  blockedAt: Date | null;
-  blockedReason: string | null;
-  role: string;
-  _count: {
-    jobs: number;
-    applications: number;
-  };
-  jobs?: Array<{
-    id: string;
-    title: string;
-    company: string;
-    postedAt: Date;
-    isBlocked: boolean;
-    isHidden: boolean;
-    _count: {
-      applications: number;
-    };
-  }>;
-  applications?: Array<{
-    id: string;
-    appliedAt: Date;
-    job: {
-      id: string;
-      title: string;
-      company: string;
-    };
-  }>;
-}
+import type { User } from "@/types/admin";
 
 interface AdminUsersClientProps {
   initialUsers: User[];
@@ -50,6 +13,11 @@ export default function AdminUsersClient({
   initialUsers,
 }: AdminUsersClientProps) {
   const [users, setUsers] = useState<User[]>(initialUsers);
+
+  // Sync state with server data when filters/search change
+  useEffect(() => {
+    setUsers(initialUsers);
+  }, [initialUsers]);
   const [loading, setLoading] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);

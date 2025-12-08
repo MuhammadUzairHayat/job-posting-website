@@ -4,15 +4,9 @@ import AdminDashboardLayout from "@/Components/admin/AdminDashboardLayout";
 import AdminFilters from "@/Components/admin/AdminFilters";
 import Pagination from "@/Components/admin/Pagination";
 import RoleFilterSelect from "./RoleFilterSelect";
+import type { SearchParams } from "@/types/admin";
 
 const ITEMS_PER_PAGE = 12;
-
-interface SearchParams {
-  page?: string;
-  search?: string;
-  status?: string;
-  role?: string;
-}
 
 async function getUsers(searchParams: SearchParams) {
   const page = parseInt(searchParams.page || "1");
@@ -101,17 +95,25 @@ export default async function AdminUsersPage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const { users, totalCount, currentPage, totalPages } = await getUsers(params);
-
-  const [activeCount, blockedCount] = await Promise.all([
-    prisma.user.count({ where: { isBlocked: false } }),
-    prisma.user.count({ where: { isBlocked: true } }),
+  const [usersData, userStats] = await Promise.all([
+    getUsers(params),
+    prisma.user.groupBy({
+      by: ['isBlocked'],
+      _count: true,
+    }),
   ]);
 
+  const { users, totalCount, currentPage, totalPages } = usersData;
+
+  // Calculate stats from grouped data
+  const totalUsers = userStats.reduce((sum, stat) => sum + stat._count, 0);
+  const blockedUsers = userStats.find(s => s.isBlocked)?._count || 0;
+  const activeUsers = userStats.find(s => !s.isBlocked)?._count || 0;
+
   const stats = {
-    total: totalCount,
-    active: activeCount,
-    blocked: blockedCount,
+    total: totalUsers,
+    active: activeUsers,
+    blocked: blockedUsers,
   };
 
   return (
@@ -186,7 +188,10 @@ export default async function AdminUsersPage({
         </div>
       ) : (
         <>
-          <AdminUsersClient initialUsers={users} />
+          <AdminUsersClient 
+            key={`${params.page}-${params.search}-${params.status}-${params.role}-${users.length}`}
+            initialUsers={users} 
+          />
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

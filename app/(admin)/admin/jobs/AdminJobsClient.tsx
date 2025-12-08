@@ -1,26 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaBan, FaEye, FaEyeSlash, FaTrash, FaEnvelope, FaInfoCircle } from "react-icons/fa";
-
-interface Job {
-  id: string;
-  title: string;
-  company: string;
-  location: string;
-  type: string;
-  postedAt: string;
-  isBlocked: boolean;
-  isHidden: boolean;
-  blockedReason?: string | null;
-  postedBy: {
-    name: string | null;
-    email: string;
-  };
-  _count: {
-    applications: number;
-  };
-}
+import type { Job } from "@/types/admin";
 
 interface AdminJobsClientProps {
   initialJobs: Job[];
@@ -28,6 +10,11 @@ interface AdminJobsClientProps {
 
 export default function AdminJobsClient({ initialJobs }: AdminJobsClientProps) {
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
+
+  // Sync state with server data when filters/search change
+  useEffect(() => {
+    setJobs(initialJobs);
+  }, [initialJobs]);
   const [loading, setLoading] = useState<string | null>(null);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [showReasonModal, setShowReasonModal] = useState(false);

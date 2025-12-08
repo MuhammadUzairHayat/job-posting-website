@@ -4,14 +4,23 @@ import { FaBriefcase, FaUsers, FaEnvelope, FaCheckCircle } from "react-icons/fa"
 import AdminDashboardLayout from "@/Components/admin/AdminDashboardLayout";
 
 async function getDashboardStats() {
-  const [totalJobs, totalUsers, totalApplications, blockedJobs, blockedUsers] =
-    await Promise.all([
-      prisma.job.count(),
-      prisma.user.count(),
-      prisma.application.count(),
-      prisma.job.count({ where: { isBlocked: true } }),
-      prisma.user.count({ where: { isBlocked: true } }),
-    ]);
+  // Optimize: Use aggregation instead of multiple count queries
+  const [jobStats, userStats, totalApplications] = await Promise.all([
+    prisma.job.groupBy({
+      by: ['isBlocked'],
+      _count: true,
+    }),
+    prisma.user.groupBy({
+      by: ['isBlocked'],
+      _count: true,
+    }),
+    prisma.application.count(),
+  ]);
+
+  const totalJobs = jobStats.reduce((sum, stat) => sum + stat._count, 0);
+  const blockedJobs = jobStats.find(s => s.isBlocked)?._count || 0;
+  const totalUsers = userStats.reduce((sum, stat) => sum + stat._count, 0);
+  const blockedUsers = userStats.find(s => s.isBlocked)?._count || 0;
 
   return {
     totalJobs,

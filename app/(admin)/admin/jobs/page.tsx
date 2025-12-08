@@ -3,16 +3,9 @@ import AdminJobsClient from "./AdminJobsClient";
 import AdminDashboardLayout from "@/Components/admin/AdminDashboardLayout";
 import AdminFilters from "@/Components/admin/AdminFilters";
 import Pagination from "@/Components/admin/Pagination";
+import type { SearchParams } from "@/types/admin";
 
 const ITEMS_PER_PAGE = 10;
-
-interface SearchParams {
-  page?: string;
-  search?: string;
-  status?: string;
-  dateFrom?: string;
-  dateTo?: string;
-}
 
 async function getJobs(searchParams: SearchParams) {
   const page = parseInt(searchParams.page || "1");
@@ -112,19 +105,33 @@ export default async function AdminJobsPage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const { jobs, totalCount, currentPage, totalPages } = await getJobs(params);
-
-  const [activeCount, blockedCount, hiddenCount] = await Promise.all([
-    prisma.job.count({ where: { isBlocked: false } }),
-    prisma.job.count({ where: { isBlocked: true } }),
-    prisma.job.count({ where: { isHidden: true } }),
+  const [jobsData, jobStats] = await Promise.all([
+    getJobs(params),
+    prisma.job.groupBy({
+      by: ['isBlocked', 'isHidden'],
+      _count: true,
+    }),
   ]);
 
+  const { jobs, totalCount, currentPage, totalPages } = jobsData;
+
+  // Calculate stats from grouped data
+  const totalJobs = jobStats.reduce((sum, stat) => sum + stat._count, 0);
+  const blockedJobs = jobStats
+    .filter(s => s.isBlocked)
+    .reduce((sum, stat) => sum + stat._count, 0);
+  const hiddenJobs = jobStats
+    .filter(s => s.isHidden)
+    .reduce((sum, stat) => sum + stat._count, 0);
+  const activeJobs = jobStats
+    .filter(s => !s.isBlocked)
+    .reduce((sum, stat) => sum + stat._count, 0);
+
   const stats = {
-    total: totalCount,
-    active: activeCount,
-    blocked: blockedCount,
-    hidden: hiddenCount,
+    total: totalJobs,
+    active: activeJobs,
+    blocked: blockedJobs,
+    hidden: hiddenJobs,
   };
 
   return (
@@ -215,7 +222,10 @@ export default async function AdminJobsPage({
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <AdminJobsClient initialJobs={jobs} />
+            <AdminJobsClient 
+              key={`${params.page}-${params.search}-${params.status}-${jobs.length}`}
+              initialJobs={jobs} 
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
