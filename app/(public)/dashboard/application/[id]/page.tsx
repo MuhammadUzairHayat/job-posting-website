@@ -29,8 +29,8 @@ export default async function ApplicationDetailPage({
   });
 
   if (!application) return notFound();
-  const isOwner = userId && application.userId === userId;
-  const isJobPoster = userId && application.job.postedById === userId;
+  const isOwner = !!(userId && application.userId === userId);
+  const isJobPoster = !!(userId && application.job.postedById === userId);
 
   return (
     <ApplicationDetailClient
