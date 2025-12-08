@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaSearch, FaFilter, FaTimes } from "react-icons/fa";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { FilterOption } from "@/types/admin";
 
 interface AdminFiltersProps {
@@ -26,8 +26,11 @@ export default function AdminFilters({
   const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") || "");
   const [dateTo, setDateTo] = useState(searchParams.get("dateTo") || "");
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Track if this is the initial mount
+  const isInitialMount = useRef(true);
 
-  const applyFilters = useCallback(() => {
+  const applyFilters = useCallback((resetPage = true) => {
     const params = new URLSearchParams(searchParams.toString());
     
     if (search) params.set("search", search);
@@ -42,8 +45,10 @@ export default function AdminFilters({
     if (dateTo) params.set("dateTo", dateTo);
     else params.delete("dateTo");
     
-    // Reset to page 1 when filters change
-    params.set("page", "1");
+    // Only reset to page 1 if filters actually changed
+    if (resetPage) {
+      params.set("page", "1");
+    }
     
     // Use replace to prevent scroll jump and avoid adding to history
     router.replace(`?${params.toString()}`, { scroll: false });
@@ -51,19 +56,26 @@ export default function AdminFilters({
 
   // Debounced search - only for search input
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const timer = setTimeout(() => {
-      applyFilters();
+      applyFilters(true);
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [search, applyFilters]);
+  }, [search]);
 
   // Immediate filter application for non-search filters
   useEffect(() => {
-    if (status || dateFrom || dateTo) {
-      applyFilters();
+    if (isInitialMount.current) {
+      return;
     }
-  }, [status, dateFrom, dateTo, applyFilters]);
+
+    applyFilters(true);
+  }, [status, dateFrom, dateTo]);
 
   const clearFilters = () => {
     setSearch("");
