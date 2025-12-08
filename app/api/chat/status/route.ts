@@ -49,20 +49,21 @@ export async function GET(request: Request) {
       select: {
         id: true,
         lastSeen: true,
+        hideLastSeen: true,
       },
     });
 
     // Consider user online if lastSeen is within last 2 minutes
     const now = new Date();
     const statuses = users.reduce(
-      (acc: Record<string, { isOnline: boolean; lastSeen: Date | null }>, user: { id: string; lastSeen: Date | null }) => {
+      (acc: Record<string, { isOnline: boolean; lastSeen: Date | null }>, user: { id: string; lastSeen: Date | null; hideLastSeen: boolean }) => {
         const lastSeenTime = user.lastSeen?.getTime() || 0;
         const timeDiff = now.getTime() - lastSeenTime;
         const isOnline = timeDiff < 120000; // 2 minutes in milliseconds
         
         acc[user.id] = {
-          isOnline,
-          lastSeen: user.lastSeen,
+          isOnline: user.hideLastSeen ? false : isOnline, // Hide online status if privacy enabled
+          lastSeen: user.hideLastSeen ? null : user.lastSeen, // Hide last seen if privacy enabled
         };
         return acc;
       },

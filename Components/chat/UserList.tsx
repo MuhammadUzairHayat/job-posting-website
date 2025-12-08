@@ -20,7 +20,7 @@ interface Props {
   onSelectUser: (user: User) => void;
   unreadCounts: { [userId: string]: number };
   onSearch: (query: string) => void;
-  onlineStatuses: { [userId: string]: boolean };
+  onlineStatuses: { [userId: string]: { isOnline: boolean; lastSeen: Date | null } };
 }
 
 export default function UserList({ 
@@ -39,9 +39,9 @@ export default function UserList({
   };
 
   return (
-    <div className="w-80 border-r border-gray-200 bg-gray-50 flex flex-col">
+    <div className="w-full h-full border-r border-gray-200 bg-gray-50 flex flex-col">
       {/* Search Bar */}
-      <div className="p-4 border-b border-gray-200 bg-white">
+      <div className="p-3 sm:p-4 border-b border-gray-200 bg-white">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
@@ -79,13 +79,13 @@ export default function UserList({
             {users.map((user) => {
               const isSelected = selectedUser?.id === user.id;
               const unreadCount = unreadCounts[user.id] || 0;
-              const isOnline = onlineStatuses[user.id] || false;
+              const isOnline = onlineStatuses[user.id]?.isOnline || false;
 
               return (
                 <motion.button
                   key={user.id}
                   onClick={() => onSelectUser(user)}
-                  className={`w-full p-4 flex items-center gap-3 hover:bg-white transition-colors text-left ${
+                  className={`w-full p-3 sm:p-4 flex items-center gap-2 sm:gap-3 hover:bg-white transition-colors text-left ${
                     isSelected ? "bg-white border-l-4 border-blue-500" : ""
                   }`}
                   whileHover={{ x: 4 }}
@@ -97,10 +97,10 @@ export default function UserList({
                       alt={user.name || "User"}
                       width={48}
                       height={48}
-                      className="rounded-full border-2 border-white shadow-sm"
+                      className="rounded-full border-2 border-white shadow-sm w-10 h-10 sm:w-12 sm:h-12"
                     />
                     {/* Online/Offline indicator */}
-                    <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
+                    <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border-2 border-white ${
                       isOnline ? "bg-green-500" : "bg-gray-400"
                     }`} />
                   </div>

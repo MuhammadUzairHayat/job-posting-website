@@ -70,6 +70,7 @@ model User {
   bio              String?      // Short bio/about
   location         String?      // User's location
   lastSeen         DateTime?    // Last activity timestamp for online status
+  hideLastSeen     Boolean       @default(false) // Privacy setting to hide last seen
   
   accounts      Account[]
   sessions      Session[]

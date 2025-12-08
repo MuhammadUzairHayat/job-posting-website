@@ -126,22 +126,22 @@ export default function MessageList({
 
   if (messages.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
         <div className="text-center max-w-sm">
-          <div className="w-20 h-20 rounded-full bg-gray-100 mx-auto mb-4 flex items-center justify-center relative">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 mx-auto mb-4 flex items-center justify-center relative">
             <Image
               src={selectedUser.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.email)}&size=48&background=4F46E5&color=fff&bold=true`}
               alt={selectedUser.name || "User"}
               width={48}
               height={48}
-              className="rounded-full"
+              className="rounded-full w-10 h-10 sm:w-12 sm:h-12"
             />
             {/* Online/Offline indicator */}
-            <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white ${
+            <div className={`absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-white ${
               isUserOnline ? "bg-green-500" : "bg-gray-400"
             }`} />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 truncate px-4">
             {selectedUser.name || selectedUser.email}
           </h3>
           <p className="text-sm text-gray-500 mb-1">
@@ -156,13 +156,13 @@ export default function MessageList({
   }
 
   return (
-    <div ref={containerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+    <div ref={containerRef} className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4">
       {Object.entries(messageGroups).map(([date, msgs]) => (
         <div key={date}>
           {/* Date Divider */}
-          <div className="flex items-center justify-center my-4">
-            <div className="bg-gray-100 rounded-full px-3 py-1">
-              <span className="text-xs font-medium text-gray-600">{date}</span>
+          <div className="flex items-center justify-center my-3 sm:my-4">
+            <div className="bg-gray-100 rounded-full px-2.5 sm:px-3 py-1">
+              <span className="text-[10px] sm:text-xs font-medium text-gray-600">{date}</span>
             </div>
           </div>
 
@@ -208,18 +208,18 @@ export default function MessageList({
                 )}
 
                 {/* Message Bubble Container */}
-                <div className="flex flex-col gap-1 max-w-[70%] mt-2">
+                <div className="flex flex-col gap-1 max-w-[85%] sm:max-w-[70%] mt-2">
                   {/* Admin Badge - shown for received messages from admin */}
                   {!isOwnMessage && message.sender?.role === "admin" && (
-                    <div className="flex items-center gap-1 px-2">
-                      <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                    <div className="flex items-center gap-1 px-1 sm:px-2">
+                      <span className="text-[10px] sm:text-xs font-semibold text-blue-600 bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full border border-blue-200">
                         👑 Admin
                       </span>
                     </div>
                   )}
                   
                   {/* Message Bubble */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     {isOwnMessage && (
                       <MessageActions
                         isOwnMessage={isOwnMessage}
@@ -231,7 +231,7 @@ export default function MessageList({
                     )}
                     
                     <div
-                      className={`rounded-2xl px-4 py-2 relative ${
+                      className={`rounded-2xl px-3 sm:px-4 py-2 relative ${
                         isOwnMessage
                           ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white"
                           : "bg-gray-100 text-gray-900"
