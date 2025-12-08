@@ -16,6 +16,7 @@ interface User {
   image: string | null;
   jobTitle: string | null;
   role?: string;
+  isOnline?: boolean;
 }
 
 export default function ChatWindow() {
@@ -37,6 +38,7 @@ export default function ChatWindow() {
   const [unreadCounts, setUnreadCounts] = useState<{ [userId: string]: number }>({});
   const [editingMessage, setEditingMessage] = useState<{ id: string; text: string } | null>(null);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [onlineStatuses, setOnlineStatuses] = useState<{ [userId: string]: boolean }>({});
 
   const fetchUsers = async (search?: string) => {
     try {
@@ -133,6 +135,50 @@ export default function ChatWindow() {
 
     return () => clearInterval(interval);
   }, [isOpen]);
+
+  // Heartbeat: Update own online status every 60 seconds
+  useEffect(() => {
+    if (!isOpen || !session?.user) return;
+
+    // Update immediately on open
+    fetch("/api/chat/status", { method: "POST" });
+
+    const heartbeat = setInterval(() => {
+      fetch("/api/chat/status", { method: "POST" });
+    }, 60000); // 60 seconds
+
+    return () => clearInterval(heartbeat);
+  }, [isOpen, session]);
+
+  // Fetch online statuses for all users every 10 seconds
+  useEffect(() => {
+    if (!isOpen || users.length === 0) return;
+
+    const fetchOnlineStatuses = async () => {
+      try {
+        const userIds = users.map(u => u.id).join(",");
+        const res = await fetch(`/api/chat/status?userIds=${userIds}`);
+        if (res.ok) {
+          const data = await res.json();
+          const statusMap: { [key: string]: boolean } = {};
+          Object.keys(data.statuses).forEach(userId => {
+            statusMap[userId] = data.statuses[userId].isOnline;
+          });
+          setOnlineStatuses(statusMap);
+        }
+      } catch (error) {
+        console.error("Failed to fetch online statuses:", error);
+      }
+    };
+
+    // Fetch immediately
+    fetchOnlineStatuses();
+
+    // Poll every 10 seconds
+    const interval = setInterval(fetchOnlineStatuses, 10000);
+
+    return () => clearInterval(interval);
+  }, [isOpen, users]);
 
   const handleSendMessage = async (text: string) => {
     if (!selectedUser) return;
@@ -314,6 +360,7 @@ export default function ChatWindow() {
               onSelectUser={handleSelectUser}
               unreadCounts={unreadCounts}
               onSearch={handleSearch}
+              onlineStatuses={onlineStatuses}
             />
 
             {/* Chat Area */}
@@ -335,6 +382,7 @@ export default function ChatWindow() {
                         onEditMessage={handleEditMessage}
                         onDeleteMessage={handleDeleteMessage}
                         onReactMessage={handleReactMessage}
+                        isUserOnline={onlineStatuses[selectedUser.id] || false}
                       />
                       <MessageInput 
                         onSend={handleSendMessage}

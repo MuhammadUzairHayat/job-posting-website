@@ -69,6 +69,7 @@ model User {
   portfolioUrl     String?
   bio              String?      // Short bio/about
   location         String?      // User's location
+  lastSeen         DateTime?    // Last activity timestamp for online status
   
   accounts      Account[]
   sessions      Session[]

@@ -36,6 +36,7 @@ interface Props {
   onEditMessage: (messageId: string, text: string) => void;
   onDeleteMessage: (messageId: string) => void;
   onReactMessage: (messageId: string, emoji: string) => void;
+  isUserOnline: boolean;
 }
 
 export default function MessageList({ 
@@ -44,6 +45,7 @@ export default function MessageList({
   onEditMessage,
   onDeleteMessage,
   onReactMessage,
+  isUserOnline,
 }: Props) {
   const { data: session } = useSession();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -126,7 +128,7 @@ export default function MessageList({
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="text-center max-w-sm">
-          <div className="w-20 h-20 rounded-full bg-gray-100 mx-auto mb-4 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-gray-100 mx-auto mb-4 flex items-center justify-center relative">
             <Image
               src={selectedUser.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.email)}&size=48&background=4F46E5&color=fff&bold=true`}
               alt={selectedUser.name || "User"}
@@ -134,12 +136,19 @@ export default function MessageList({
               height={48}
               className="rounded-full"
             />
+            {/* Online/Offline indicator */}
+            <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white ${
+              isUserOnline ? "bg-green-500" : "bg-gray-400"
+            }`} />
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             {selectedUser.name || selectedUser.email}
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 mb-1">
             No messages yet. Start the conversation!
+          </p>
+          <p className="text-xs text-gray-400">
+            {isUserOnline ? "🟢 Online" : "⚫ Offline"}
           </p>
         </div>
       </div>
@@ -177,15 +186,21 @@ export default function MessageList({
               >
                 {/* Avatar for received messages */}
                 {!isOwnMessage && (
-                  <div className="w-8 h-8 flex-shrink-0">
+                  <div className="w-8 h-8 flex-shrink-0 relative">
                     {showAvatar ? (
-                      <Image
-                        src={selectedUser.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.email)}&size=32&background=4F46E5&color=fff&bold=true`}
-                        alt={selectedUser.name || "User"}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                      />
+                      <>
+                        <Image
+                          src={selectedUser.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedUser.name || selectedUser.email)}&size=32&background=4F46E5&color=fff&bold=true`}
+                          alt={selectedUser.name || "User"}
+                          width={32}
+                          height={32}
+                          className="rounded-full"
+                        />
+                        {/* Online/Offline indicator - only show on first message of group */}
+                        <div className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border border-white ${
+                          isUserOnline ? "bg-green-500" : "bg-gray-400"
+                        }`} />
+                      </>
                     ) : (
                       <div className="w-8 h-8" />
                     )}
@@ -193,7 +208,7 @@ export default function MessageList({
                 )}
 
                 {/* Message Bubble Container */}
-                <div className="flex flex-col gap-1 max-w-[70%]">
+                <div className="flex flex-col gap-1 max-w-[70%] mt-2">
                   {/* Admin Badge - shown for received messages from admin */}
                   {!isOwnMessage && message.sender?.role === "admin" && (
                     <div className="flex items-center gap-1 px-2">
@@ -226,14 +241,7 @@ export default function MessageList({
                         {message.text}
                       </p>
                       
-                      {/* Edited indicator */}
-                      {message.edited && (
-                        <span className={`text-xs italic ${
-                          isOwnMessage ? "text-blue-100" : "text-gray-500"
-                        }`}>
-                          {" "}(edited)
-                        </span>
-                      )}
+      
                       
                       <p
                         className={`text-xs mt-1 ${
@@ -241,6 +249,14 @@ export default function MessageList({
                         }`}
                       >
                         {formatMessageTime(message.createdAt)}
+                                        {/* Edited indicator */}
+                      {message.edited && (
+                        <span className={`text-xs italic ${
+                          isOwnMessage ? "text-blue-100" : "text-gray-500"
+                        }`}>
+                          {" "} &nbsp;(edited)
+                        </span>
+                      )}
                       </p>
 
                       {/* Reaction */}
